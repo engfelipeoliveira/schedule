@@ -1,5 +1,6 @@
 package br.com.system.schedule.controller;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.system.schedule.model.Agenda;
@@ -67,8 +70,8 @@ public class ImportaAgendaController {
         		throw new Exception("O arquivo precisa de quatro colunas. Nome, Data, Hora e Celular.");
         	}
         	
-        	if(linhas < 2){
-        		throw new Exception("O arquivo precisa de ao menos uma linha além do cabeçalho.");
+        	if(linhas < 2 || linhas > 1000){
+        		throw new Exception("O arquivo precisa de 1 a 1000 registros de agenda.");
         	}
         	
         	List<Agenda> listaAgenda = new ArrayList<Agenda>();
@@ -121,19 +124,19 @@ public class ImportaAgendaController {
         		Date dataEvento = frm.parse(dataEventoStr);
         		
         		Agenda agenda = new Agenda();
+        		agenda.setTipoCadastro("A");
         		agenda.setDataEvento(dataEvento);
         		agenda.setDataInclusao(new Date());
         		Destinatario destinatario = new Destinatario();
         		destinatario.setCelular(Long.parseLong(celular));
         		destinatario.setNome(nome);
-        		destinatario.setDataInclusao(new Date());
         		agenda.setDestinatario(destinatario);
         		listaAgenda.add(agenda);
         	}
 
         	importaAgenda.setAgenda(listaAgenda);
         	importaAgenda.setNomeArquivo(nomeArquivo);
-        	importaAgenda.setTipoCadastro("A");
+        	importaAgenda.setQuantidade(linhas);
             importaAgendaService.importarAgenda(importaAgenda);
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agenda importada com sucesso", "Sucesso"));
             initImportaAgenda();
@@ -143,6 +146,32 @@ public class ImportaAgendaController {
             facesContext.addMessage(null, m);
         }
     }
+    
+    public void excluirImportaAgenda(ImportaAgenda importaAgenda) throws Exception {
+        try {
+        	importaAgendaService.excluirImportaAgenda(importaAgenda);
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Importação excluída com sucesso", "Sucesso"));
+            initImportaAgenda();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
+            facesContext.addMessage(null, m);
+        }
+    }
+    
+    private StreamedContent file;
+    
+    public void download() {        
+    	//InputStream stream = getClass().getResourceAsStream("/exemplo.xls");
+    	InputStream stream = ImportaAgendaController.class.getClassLoader().getResourceAsStream("exemplo.xls");
+    	//InputStream stream = getClass().getClassLoader().getResourceAsStream("/exemplo.xls");
+        file = new DefaultStreamedContent(stream, "application/xls", "exemplo.xls");
+    }
+ 
+    public StreamedContent getFile() {
+        return file;
+    }
+
     
     public String formataData(Date data, String formato){
     	SimpleDateFormat sdf = new SimpleDateFormat(formato);

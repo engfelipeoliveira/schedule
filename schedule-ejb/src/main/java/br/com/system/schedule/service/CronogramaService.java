@@ -17,7 +17,6 @@
 package br.com.system.schedule.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,13 +48,7 @@ public class CronogramaService {
         	throw new Exception("Cronograma e obrigatoria");
         }else{
         	try {
-        		if(cronograma.getId() == null){
-        			cronograma.setDataInclusao(new Date());
-                    entityManager.persist(cronograma);
-        		}else{
-        			cronograma.setDataUltimaAlteracao(new Date());
-                    entityManager.merge(cronograma);
-        		}
+        		entityManager.merge(cronograma);
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".inserirCronograma() - Erro ao inserir cronograma");
 				throw new Exception("Erro ao inserir cronograma");

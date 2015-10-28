@@ -13,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class ImportaAgenda implements Serializable {
@@ -35,10 +35,11 @@ public class ImportaAgenda implements Serializable {
 	@Column(length=100)
 	private String nomeArquivo;
 	
-	// A - Arquivo / W - Webservice
-	@NotNull(message="Tipo de Cadastro é obrigatório")
-	@Length(max=1)
-	private String tipoCadastro;
+	
+	@Max(value=1000, message="O valor deve ser menor que 1000")
+	@Min(value=1, message="O valor deve ser maior que 1")
+	@NotNull(message="Quantidade de agendas é obrigatória")
+	private int quantidade;
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -69,20 +70,20 @@ public class ImportaAgenda implements Serializable {
 		this.nomeArquivo = nomeArquivo;
 	}
 
-	public String getTipoCadastro() {
-		return tipoCadastro;
-	}
-
-	public void setTipoCadastro(String tipoCadastro) {
-		this.tipoCadastro = tipoCadastro;
-	}
-
 	public List<Agenda> getAgenda() {
 		return agenda;
 	}
 
 	public void setAgenda(List<Agenda> agenda) {
 		this.agenda = agenda;
+	}
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 }

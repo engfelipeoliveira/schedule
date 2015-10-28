@@ -16,19 +16,18 @@
       	<p:growl id="growl" life="3000" />
       	<h:inputHidden id="id" value="#{agenda.id}" />
       	
-         <h:panelGrid columns="3" columnClasses="titleCell" id="agenda_pnl">
+         <h:panelGrid columns="2" columnClasses="titleCell" id="agenda_pnl">
             <h:outputLabel for="nome" value="Nome*:"/>
             <p:inputText placeholder="Informe o nome completo" size="30" id="nome" value="#{agenda.destinatario.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
-			<p:calendar style="visibility:hidden" id="dataInclusao" required="false" value="#{agenda.dataInclusao}" />
 			
             <h:outputLabel for="celular" value="Celular*:"/>
             <p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.destinatario.celular}" required="true" requiredMessage="Celular é obrigatório"/>
-            <p:calendar style="visibility:hidden" id="dataInclusaoDest" value="#{agenda.destinatario.dataInclusao}" />
 
        		<h:outputLabel for="dataEvento" value="Data/Hora*:"/>
        		<p:calendar id="dataEvento" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agenda.dataEvento}" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="true" />
-       		<h:outputText />
        		
+       		<h:outputLabel for="dataEvento" value="Cadastro:"/>
+       		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{agenda.dataInclusao}" />
          </h:panelGrid>
          
          <p>
@@ -69,8 +68,13 @@
 	       <p:column headerText="Celular" width="20%" >
 	          <h:outputText value="(#{agendas.destinatario.celular.toString().substring(0,2)})#{agendas.destinatario.celular.toString().substring(2,3)}.#{agendas.destinatario.celular.toString().substring(3,7)}-#{agendas.destinatario.celular.toString().substring(7,11)}" />
 	       </p:column>
-	       <p:column headerText="Data/Hora" width="25%">
+	       <p:column headerText="Data/Hora" width="20%">
 	          <h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
+	       </p:column>
+	       <p:column headerText="Tipo" width="15%" >
+	        <h:outputText value="Manual" rendered="#{agendas.tipoCadastro eq 'M'}" />
+	       	<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
+	       	<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
 	       </p:column>
 	       
 	       <p:column  width="11%" exportable="false" >

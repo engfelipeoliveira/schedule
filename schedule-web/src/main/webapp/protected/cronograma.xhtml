@@ -19,7 +19,7 @@
          
             <h:outputLabel for="nome" value="Nome*:"/>
             <p:inputText placeholder="Informe o nome" size="30" id="nome" value="#{cronograma.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
-			<p:calendar style="visibility:hidden" id="dataInclusao" value="#{cronograma.dataInclusao}" />
+			<h:outputText />
 			
             <h:outputLabel for="texto" value="Texto*:" />
             <p:inputTextarea counter="contador" id="texto" value="#{cronograma.texto}" placeholder="Informe o texto da mensagem. Utilize as váriaveis #REMETENTE, #DESTINATARIO, #DATA e #HORA" maxlength="300" cols="30" rows="10" required="true" requiredMessage="Texto é obrigatório" />
@@ -27,6 +27,10 @@
 
             <h:outputLabel for="horaAntesEvento" value="Horas*:"/>
             <p:inputMask mask="9?999" placeholder="Informe quantas horas antes" size="30" id="horaAntesEvento" value="#{cronograma.horaAntesEvento}" maxlength="4" required="true" requiredMessage="Horas é obrigatório" />
+			<h:outputText />
+			
+			<h:outputLabel for="dataEvento" value="Cadastro:"/>
+       		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{cronograma.dataInclusao}" />
 			<h:outputText />
 			
          </h:panelGrid>

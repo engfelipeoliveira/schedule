@@ -58,6 +58,24 @@ public class ImportaAgendaService {
         }
     }
     
+    
+    public void excluirImportaAgenda(ImportaAgenda importaAgenda) throws Exception {
+    	logger.info("Excluindo agendas importadas");
+        
+        if(importaAgenda == null){
+        	logger.log(Level.INFO, NOME_CLASS +".excluirImportaAgenda() - Agenda e obrigatoria");
+        	throw new Exception("Agenda e obrigatoria");
+        }else{
+        	try {
+                entityManager.remove(entityManager.getReference(ImportaAgenda.class, importaAgenda.getId()));
+			} catch (PersistenceException e) {
+				logger.log(Level.INFO, NOME_CLASS +".excluirImportaAgenda() - Erro ao excluir agenda");
+				throw new Exception("Erro ao excluir agenda");
+			}
+        }
+    }
+
+    
 	public List<ImportaAgenda> listarImportaAgenda() throws Exception {
     	logger.info("Listando agenda importada");
         

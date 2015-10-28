@@ -41,11 +41,9 @@ public class Cronograma implements Serializable {
 	@Min(value=1, message="O valor deve ser maior que 1")
 	private Long horaAntesEvento;
 	
+	@NotNull(message="Data de Inclusão é obrigatória")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataUltimaAlteracao;
 
 	public Long getId() {
 		return id;
@@ -95,13 +93,4 @@ public class Cronograma implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public Date getDataUltimaAlteracao() {
-		return dataUltimaAlteracao;
-	}
-
-	public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
-		this.dataUltimaAlteracao = dataUltimaAlteracao;
-	}
-
-	
 }

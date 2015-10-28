@@ -49,15 +49,7 @@ public class AgendaService {
         	throw new Exception("Agenda e obrigatoria");
         }else{
         	try {
-        		if(agenda.getId() == null){
-            		agenda.getDestinatario().setDataInclusao(new Date());
-            		agenda.setDataInclusao(new Date());
-                    entityManager.persist(agenda);
-        		}else{
-        			agenda.getDestinatario().setDataUltimaAlteracao(new Date());
-            		agenda.setDataUltimaAlteracao(new Date());
-                    entityManager.merge(agenda);
-        		}
+        		entityManager.merge(agenda);
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".inserirAgenda() - Erro ao inserir agenda");
 				throw new Exception("Erro ao inserir agenda");

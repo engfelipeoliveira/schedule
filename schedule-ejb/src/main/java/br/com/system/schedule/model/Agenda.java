@@ -14,6 +14,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Agenda implements Serializable {
 	
@@ -35,12 +37,15 @@ public class Agenda implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataEvento;
 	
+	@NotNull(message="Data de Inclusão é obrigatória")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataUltimaAlteracao;
-
+	// M - Manual / A - Arquivo / W - Webservice
+	@NotNull(message="Tipo de Cadastro é obrigatório")
+	@Length(max=1)
+	private String tipoCadastro;
+	
 	public Long getId() {
 		return id;
 	}
@@ -73,12 +78,12 @@ public class Agenda implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public Date getDataUltimaAlteracao() {
-		return dataUltimaAlteracao;
+	public String getTipoCadastro() {
+		return tipoCadastro;
 	}
 
-	public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
-		this.dataUltimaAlteracao = dataUltimaAlteracao;
+	public void setTipoCadastro(String tipoCadastro) {
+		this.tipoCadastro = tipoCadastro;
 	}
 	
 }

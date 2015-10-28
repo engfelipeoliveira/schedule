@@ -51,6 +51,7 @@ public class CronogramaController {
     @PostConstruct
     public void initCronograma() {
     	cronograma = new Cronograma();
+    	cronograma.setDataInclusao(new Date());
     }
 
     public String formataData(Date data, String formato){

@@ -1,15 +1,13 @@
 package br.com.system.schedule.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -36,14 +34,9 @@ public class Destinatario implements Serializable {
 	
 	@NotNull(message="Celular é obrigatório")
 	@Column(length=11)
+	@Min(value=11, message="Celular deve conter 11 dígitos (ddd + celular)")
 	private Long celular;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataInclusao;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataUltimaAlteracao;
-
 	public Long getId() {
 		return id;
 	}
@@ -74,22 +67,6 @@ public class Destinatario implements Serializable {
 
 	public void setCelular(Long celular) {
 		this.celular = celular;
-	}
-
-	public Date getDataInclusao() {
-		return dataInclusao;
-	}
-
-	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-
-	public Date getDataUltimaAlteracao() {
-		return dataUltimaAlteracao;
-	}
-
-	public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
-		this.dataUltimaAlteracao = dataUltimaAlteracao;
 	}
 
 }
