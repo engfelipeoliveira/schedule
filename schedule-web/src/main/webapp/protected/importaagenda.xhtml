@@ -18,10 +18,10 @@
             fileLimit="1" fileLimitMessage="Selecione somente um arquivo"  
             allowTypes="/(\.|\/)(xls|XLS)$/" invalidFileMessage="Extensão de arquivo inválido. Usar xls. " 
             showButtons="true" label="Procurar" uploadLabel="Enviar" cancelLabel="Cancelar" auto="false" update="@all"/>
-         
-		<p:commandButton value="Download" actionListener="#{importaAgendaController.download}" ajax="false" icon="ui-icon-arrowthick-1-s">
+		<p:commandLink value="- Arquivo xls de exemplo" actionListener="#{importaAgendaController.download}" ajax="false" >
         	<p:fileDownload value="#{importaAgendaController.file}" />
-    	</p:commandButton>         	
+    	</p:commandLink>
+    	<p:commandLink type="button" onclick="PF('layoutImportacao').show();" value="- Layout de importação" />
 
          </h:panelGrid>
          
@@ -71,6 +71,18 @@
         <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
        </p:confirmDialog>
 	   
+	   <p:dialog  header="Layout de Importação" widgetVar="layoutImportacao" modal="true"  height="130" width="450">
+    	<h:outputText value="- O arquivo deve estar no formato Excel (*.xls)." /> <br />
+    	<h:outputText value="- O arquivo deve conter no mínimo um e no máximo mil registros de agendas." /> <br />
+    	<h:outputText value="- O arquivo deve conter quatro colunas." /> <br />
+    	<h:outputText value="- A primeira linha do arquivo deve conter o cabeçalho." /> <br />
+    	<h:outputText value="- As colunas devem estar na ordem: nome, data, hora e celular." /> <br />
+    	<h:outputText value="- A coluna 'nome' deve conter no máximo cem caracteres." /> <br />
+    	<h:outputText value="- A coluna 'data' deve estar no formato dd/mm/aaaa." /> <br />
+    	<h:outputText value="- A coluna 'hora' deve estar no formato hh:mm." /> <br />
+    	<h:outputText value="- A coluna 'celular' deve conter exatamente onze dígitos (ddd + celular)." /> <br />
+    	<h:outputText value="- Utilize o arquivo xls de exemplo disponível para download." /> <br />
+	   </p:dialog>
 	   
       </h:form>
       </p>
