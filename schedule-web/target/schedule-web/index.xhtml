@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   template="/WEB-INF/templates/defaultlogin.xhtml">
+   <ui:define name="content">
+      <h1>Login</h1>
+
+      <h:form id="login">
+         <h:panelGrid columns="3" columnClasses="titleCell">
+            <h:outputLabel for="email" value="E-mail:"/>
+            <h:inputText id="email" value="#{usuario.email}" required="true" requiredMessage="E-mail obrigatório" />
+            <h:message for="email" errorClass="invalid"/>
+
+            <h:outputLabel for="senha" value="Senha:"/>
+            <h:inputSecret id="senha" value="#{usuario.senha}" required="true" requiredMessage="Senha obrigatória"/>
+            <h:message for="senha" errorClass="invalid"/>
+         </h:panelGrid>
+         <p>
+            <h:panelGrid columns="2">
+               <h:commandButton id="login" action="#{usuarioController.login()}" value="Login" styleClass="register"/>
+               <h:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning"
+                           globalOnly="true"/>
+            </h:panelGrid>
+         </p>
+      </h:form>
+   </ui:define>
+</ui:composition>

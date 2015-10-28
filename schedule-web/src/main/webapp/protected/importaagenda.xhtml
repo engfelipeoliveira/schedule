@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/WEB-INF/templates/default.xhtml">
+   
+   <ui:define name="content">
+   
+      <h1>Importar Agenda</h1>
+      
+      <h:form id="agenda_frm" enctype="multipart/form-data">
+      
+		<p:growl id="growl" life="3000" />      	
+         <h:panelGrid columns="1" columnClasses="titleCell" id="agenda_pnl">
+            <p:fileUpload fileUploadListener="#{importaAgendaController.inserirImportaAgenda}"
+            fileLimit="1" fileLimitMessage="Selecione somente um arquivo"  
+            allowTypes="/(\.|\/)(xls|XLS)$/" invalidFileMessage="Extensão de arquivo inválido. Usar xls. " 
+            showButtons="true" label="Procurar" uploadLabel="Enviar" cancelLabel="Cancelar" auto="false" update="@all"/>
+         </h:panelGrid>
+         
+      </h:form>
+      
+      <p>
+      <h:form id="agenda_grid_frm">
+         <p:dataTable id="dt_agenda" var="agendas" emptyMessage="Nenhum registro" value="#{importaAgendaController.listarImportaAgenda()}"
+         paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
+         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
+	       <f:facet name="{Exporters}">
+	       <h:commandLink>
+                Excel
+                <p:dataExporter type="xls" target="dt_agenda" fileName="agendasIimportadas" />
+            </h:commandLink>
+            |
+	       <h:commandLink>
+                PDF
+                <p:dataExporter type="pdf" target="dt_agenda" fileName="agendasIimportadas" />
+            </h:commandLink>
+            </f:facet>
+	       
+	       <p:column headerText="Tipo" width="30%" >
+	       	<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
+	       	<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
+	       </p:column>
+	       
+	       <p:column headerText="Nome" width="40%" >
+	          <h:outputText value="#{agendas.nomeArquivo}" />
+	       </p:column>
+	       
+	       <p:column headerText="Data" width="30%" >
+	          <h:outputText value="#{importaAgendaController.formataData(agendas.dataInclusao, 'dd/MM/yyyy HH:mm')}" />
+	       </p:column>
+	       
+	   </p:dataTable>
+	   
+      </h:form>
+      </p>
+      
+      
+      
+   </ui:define>
+</ui:composition>
