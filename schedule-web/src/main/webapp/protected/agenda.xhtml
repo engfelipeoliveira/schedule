@@ -11,7 +11,6 @@
       <h1>Cadastrar Agenda</h1>
       
       <h:form id="agenda_frm">
-      
       	<p:focus for="nome" id="focus" />
       	<p:growl id="growl" life="3000" />
       	<h:inputHidden id="id" value="#{agenda.id}" />
@@ -34,7 +33,7 @@
             <h:panelGrid columns="3" >
                <p:commandButton ajax="false" id="incluir" update="growl :agenda_grid_frm" actionListener="#{agendaController.inserirAgenda()}" value="Salvar" icon="ui-icon-disk" />
                
-               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id focus" process="@this" icon="ui-icon-cancel" >
+               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id focus :agenda_grid_frm:dt_agenda" process="@this" icon="ui-icon-cancel" >
                 <p:resetInput target="agenda_pnl id" />
             </p:commandButton>
             
@@ -47,6 +46,7 @@
       
       <p>
       <h:form id="agenda_grid_frm">
+      <p:poll interval="10" update="dt_agenda" />
          <p:dataTable id="dt_agenda" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
          paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
