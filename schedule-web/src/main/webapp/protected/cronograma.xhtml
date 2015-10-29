@@ -38,7 +38,7 @@
             <h:panelGrid columns="3" >
                <p:commandButton ajax="false" id="incluir" update="growl :cronograma_grid_frm" actionListener="#{cronogramaController.inserirCronograma()}" value="Salvar" icon="ui-icon-disk" />
                
-               <p:commandButton value="Cancelar" id="cancelar" update="cronograma_pnl id" process="@this" icon="ui-icon-cancel" >
+               <p:commandButton value="Cancelar" id="cancelar" update="cronograma_pnl id focus" process="@this" icon="ui-icon-cancel" >
                 <p:resetInput target="cronograma_pnl id" />
             </p:commandButton>
             

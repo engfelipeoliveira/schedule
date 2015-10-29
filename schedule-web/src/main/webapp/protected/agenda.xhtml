@@ -34,7 +34,7 @@
             <h:panelGrid columns="3" >
                <p:commandButton ajax="false" id="incluir" update="growl :agenda_grid_frm" actionListener="#{agendaController.inserirAgenda()}" value="Salvar" icon="ui-icon-disk" />
                
-               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id" process="@this" icon="ui-icon-cancel" >
+               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id focus" process="@this" icon="ui-icon-cancel" >
                 <p:resetInput target="agenda_pnl id" />
             </p:commandButton>
             
