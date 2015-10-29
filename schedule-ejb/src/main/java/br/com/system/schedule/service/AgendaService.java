@@ -54,6 +54,7 @@ public class AgendaService {
 				logger.log(Level.INFO, NOME_CLASS +".inserirAgenda() - Erro ao inserir agenda");
 				throw new Exception("Erro ao inserir agenda");
 			}
+
         }
     }
     

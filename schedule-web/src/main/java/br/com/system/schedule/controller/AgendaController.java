@@ -30,7 +30,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.system.schedule.model.Agenda;
-import br.com.system.schedule.model.Destinatario;
 import br.com.system.schedule.service.AgendaService;
 
 @Model
@@ -44,8 +43,6 @@ public class AgendaController {
     
     private Agenda agenda;
 
-    private Destinatario destinatario;
-    
     private Locale localeCalendar = new Locale("pt", "BR");
     
     @Produces
@@ -54,18 +51,12 @@ public class AgendaController {
         return agenda;
     }
     
-    @Produces
-    @Named
-    public Destinatario getDestinatario() {
-        return destinatario;
-    }
-    
     @PostConstruct
     public void initAgenda() {
     	agenda = new Agenda();
     	agenda.setDataInclusao(new Date());
-    	destinatario = new Destinatario();
-    	agenda.setDestinatario(destinatario);
+    	agenda.setTipoCadastro("M");
+    	agenda.setSituacao("A");
     }
     
     public String formataData(Date data, String formato){
@@ -76,7 +67,6 @@ public class AgendaController {
     
     public void inserirAgenda() throws Exception {
         try {
-        	agenda.setTipoCadastro("M");
             agendaService.inserirAgenda(agenda);
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agenda salva com sucesso", "Sucesso"));
             initAgenda();

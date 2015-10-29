@@ -51,6 +51,7 @@ public class ImportaAgendaService {
         	try {
         		importaAgenda.setDataInclusao(new Date());
                 entityManager.persist(importaAgenda);
+                entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".importarAgenda() - Erro ao importar agenda");
 				throw new Exception("Erro ao importar agenda");

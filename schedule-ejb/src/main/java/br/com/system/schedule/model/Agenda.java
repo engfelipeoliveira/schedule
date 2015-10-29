@@ -3,15 +3,14 @@ package br.com.system.schedule.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -26,14 +25,22 @@ public class Agenda implements Serializable {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long id;	
 	
-	@NotNull(message="Destinatário é obrigatório")
-	@ManyToOne(targetEntity=Destinatario.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER, optional=false)
-	private Destinatario destinatario;
+	@ManyToOne(targetEntity=Usuario.class)
+	private Usuario usuario;
 	
+	@NotNull(message="Nome é obigatório")
+	@Length(max=100, message="Nome muito grande")
+	@Column(length=100)
+	private String nome;
+	
+	@NotNull(message="Celular é obrigatório")
+	@Column(length=11)
+	@Min(value=11, message="Celular deve conter 11 dígitos (ddd + celular)")
+	private Long celular;
+
 	@NotNull(message="Data/Hora é obrigatório")
-	@Future(message="Data/Hora devem estar no futuro")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataEvento;
 	
@@ -42,9 +49,11 @@ public class Agenda implements Serializable {
 	private Date dataInclusao;
 
 	// M - Manual / A - Arquivo / W - Webservice
-	@NotNull(message="Tipo de Cadastro é obrigatório")
-	@Length(max=1)
 	private String tipoCadastro;
+	
+	// A - Agendado / E - Enviado / F - Falha
+	@Column(length=1)
+	private String situacao;
 	
 	public Long getId() {
 		return id;
@@ -54,12 +63,28 @@ public class Agenda implements Serializable {
 		this.id = id;
 	}
 
-	public Destinatario getDestinatario() {
-		return destinatario;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setDestinatario(Destinatario destinatario) {
-		this.destinatario = destinatario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getCelular() {
+		return celular;
+	}
+
+	public void setCelular(Long celular) {
+		this.celular = celular;
 	}
 
 	public Date getDataEvento() {
@@ -84,6 +109,14 @@ public class Agenda implements Serializable {
 
 	public void setTipoCadastro(String tipoCadastro) {
 		this.tipoCadastro = tipoCadastro;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 	
 }

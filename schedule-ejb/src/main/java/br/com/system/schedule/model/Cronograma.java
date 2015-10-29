@@ -34,7 +34,7 @@ public class Cronograma implements Serializable {
 	private String nome;
 	
 	@NotNull(message="Texto é obrigatório")
-	@Length(max=300, message="Texto muito grande")
+	@Length(max=160, message="Texto muito grande")
 	private String texto;
 
 	@NotNull(message="Hora Antes do Evento é obrigatório")

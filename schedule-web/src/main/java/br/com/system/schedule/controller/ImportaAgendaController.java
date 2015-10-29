@@ -3,6 +3,7 @@ package br.com.system.schedule.controller;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,6 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.system.schedule.model.Agenda;
-import br.com.system.schedule.model.Destinatario;
 import br.com.system.schedule.model.ImportaAgenda;
 import br.com.system.schedule.service.ImportaAgendaService;
  
@@ -124,16 +124,17 @@ public class ImportaAgendaController {
         		Date dataEvento = frm.parse(dataEventoStr);
         		
         		Agenda agenda = new Agenda();
-        		agenda.setTipoCadastro("A");
         		agenda.setDataEvento(dataEvento);
+        		agenda.setSituacao("A");
         		agenda.setDataInclusao(new Date());
-        		Destinatario destinatario = new Destinatario();
-        		destinatario.setCelular(Long.parseLong(celular));
-        		destinatario.setNome(nome);
-        		agenda.setDestinatario(destinatario);
+        		agenda.setTipoCadastro("A");
+        		agenda.setCelular(Long.parseLong(celular));
+        		agenda.setNome(nome);
         		listaAgenda.add(agenda);
         	}
 
+        	listaAgenda.removeAll(Collections.singleton(null));
+        	
         	importaAgenda.setAgenda(listaAgenda);
         	importaAgenda.setNomeArquivo(nomeArquivo);
         	importaAgenda.setQuantidade(linhas);

@@ -19,26 +19,19 @@
          
             <h:outputLabel for="nome" value="Nome*:"/>
             <p:inputText placeholder="Informe o nome" size="30" id="nome" value="#{cronograma.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
-			<h:outputText id="esp1" />
-			
-			<h:outputLabel for="tipoMensagem" value="Tipo*:"/>
-			<p:selectOneListbox  id="tipoMensagem" value="#{cronograma.tipoMensagem}" required="true" requiredMessage="Tipo é obrigatório">
-				<f:selectItem itemLabel="SMS" itemValue="S" />
-				<f:selectItem itemLabel="E-mail" itemValue="E" />
-			</p:selectOneListbox>
-			<h:outputText id="esp2" />
-
-            <h:outputLabel for="assunto" value="Assunto:"/>
-            <p:inputText placeholder="Informe o assunto" size="30" id="assunto" value="#{cronograma.assunto}" maxlength="100" />
-			<h:outputText id="esp3" />
+			<h:outputText />
 			
             <h:outputLabel for="texto" value="Texto*:" />
-            <p:inputTextarea counter="contador" id="texto" value="#{cronograma.texto}" placeholder="Informe o texto da mensagem. Utilize as váriaveis #REMETENTE, #DESTINATARIO, #DATA e #HORA" maxlength="300" cols="30" rows="10" required="true" requiredMessage="Texto é obrigatório" />
+            <p:inputTextarea counter="contador" id="texto" value="#{cronograma.texto}" placeholder="Informe o texto da mensagem. Utilize as váriaveis #REMETENTE, #DESTINATARIO, #DATA e #HORA" maxlength="160" cols="30" rows="10" required="true" requiredMessage="Texto é obrigatório" />
             <h:outputText id="contador" />
 
             <h:outputLabel for="horaAntesEvento" value="Horas*:"/>
             <p:inputMask mask="9?999" placeholder="Informe quantas horas antes" size="30" id="horaAntesEvento" value="#{cronograma.horaAntesEvento}" maxlength="4" required="true" requiredMessage="Horas é obrigatório" />
-			<h:outputText id="esp4" />
+			<h:outputText />
+			
+			<h:outputLabel for="dataEvento" value="Cadastro:"/>
+       		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{cronograma.dataInclusao}" />
+			<h:outputText />
 			
          </h:panelGrid>
          <p>
@@ -73,13 +66,8 @@
             </h:commandLink>
             </f:facet>
 	       
-	       <p:column headerText="Nome" width="69%" >
+	       <p:column headerText="Nome" width="79%" >
 	       	<h:outputText value="#{cronogramas.nome}" />
-	       </p:column>
-	       
-	       <p:column headerText="Tipo" width="10%" >
-	       	<h:outputText value="E-mail" rendered="#{cronogramas.tipoMensagem eq 'E'}" />
-	       	<h:outputText value="SMS" rendered="#{cronogramas.tipoMensagem eq 'S'}" />
 	       </p:column>
 	       
 	       <p:column headerText="Horas" width="10%" >
