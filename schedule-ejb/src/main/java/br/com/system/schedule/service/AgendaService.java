@@ -41,6 +41,33 @@ public class AgendaService {
 
     private final String NOME_CLASS = "AgendaService";
     
+    public void atualizarRetornoSms(Long id, String retornoSms) throws Exception {
+    	logger.info("Consultando Agenda por id:" + id);
+        
+        if(id == null){
+        	logger.log(Level.INFO, NOME_CLASS +".atualizarRetornoSms() - Id Agenda e obrigatoria");
+        	throw new Exception("Id Agenda e obrigatoria");
+        }else{
+        	String sql = " from Agenda a where a.id = :id";
+            Agenda agenda = null;
+        	try {
+                agenda = (Agenda)entityManager
+            			.createQuery(sql.toString())
+            			.setParameter("id", id)
+            			.getSingleResult();
+                
+                agenda.setRetornoSms(retornoSms);
+                entityManager.merge(agenda);
+                entityManager.flush();
+    			
+    		} catch (NoResultException e) {
+    			logger.log(Level.INFO, NOME_CLASS +".atualizarRetornoSms() - Nenhuma agenda cadastrada com o id informado");
+    			throw new Exception("Nenhuma agenda cadastrada com o id informado");
+    		}
+        }
+    }
+    
+    
     public void inserirAgenda(Agenda agenda) throws Exception {
     	logger.info("Inserindo Agenda");
         

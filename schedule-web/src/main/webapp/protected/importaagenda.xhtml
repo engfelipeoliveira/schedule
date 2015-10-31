@@ -44,20 +44,20 @@
             </h:commandLink>
             </f:facet>
 	       
-	       <p:column headerText="Nome" width="40%" >
+	       <p:column headerText="Nome" width="66%" >
 	          <h:outputText value="#{agendas.nomeArquivo}" />
 	       </p:column>
 	       
-	       <p:column headerText="Quantidade" width="25%" >
+	       <p:column headerText="Quantidade" width="15%" >
 	          <h:outputText value="#{agendas.quantidade}" />
 	       </p:column>
 	       
-	       <p:column headerText="Data" width="30%" >
+	       <p:column headerText="Data" width="15%" >
 	          <h:outputText value="#{importaAgendaController.formataData(agendas.dataInclusao, 'dd/MM/yyyy HH:mm')}" />
 	       </p:column>
 	       
 	       
-	       <p:column  width="5%" exportable="false" >
+	       <p:column  width="4%" exportable="false" >
 	       	<center>
 	           <p:commandButton ajax="true" id="excluir" actionListener="#{importaAgendaController.excluirImportaAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":agenda_frm:growl dt_agenda :agenda_frm:agenda_pnl">
 	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />

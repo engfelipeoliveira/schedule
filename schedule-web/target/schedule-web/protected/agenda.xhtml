@@ -11,10 +11,9 @@
       <h1>Cadastrar Agenda</h1>
       
       <h:form id="agenda_frm">
-      
       	<p:focus for="nome" id="focus" />
       	<p:growl id="growl" life="3000" />
-      	<h:inputHidden id="id" value="#{agenda.id}" />
+      	<h:outputText id="id" value="#{agenda.id}" />
       	
          <h:panelGrid columns="2" columnClasses="titleCell" id="agenda_pnl">
             <h:outputLabel for="nome" value="Nome*:"/>
@@ -34,7 +33,7 @@
             <h:panelGrid columns="3" >
                <p:commandButton ajax="false" id="incluir" update="growl :agenda_grid_frm" actionListener="#{agendaController.inserirAgenda()}" value="Salvar" icon="ui-icon-disk" />
                
-               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id" process="@this" icon="ui-icon-cancel" >
+               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id focus :agenda_grid_frm:dt_agenda" process="@this" icon="ui-icon-cancel" >
                 <p:resetInput target="agenda_pnl id" />
             </p:commandButton>
             
@@ -47,6 +46,7 @@
       
       <p>
       <h:form id="agenda_grid_frm">
+      <p:poll interval="10" update="dt_agenda" />
          <p:dataTable id="dt_agenda" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
          paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
@@ -68,6 +68,10 @@
 	       <p:column headerText="Celular" width="16%" >
 	          <h:outputText value="(#{agendas.celular.toString().substring(0,2)})#{agendas.celular.toString().substring(2,3)}.#{agendas.celular.toString().substring(3,7)}-#{agendas.celular.toString().substring(7,11)}" />
 	       </p:column>
+	       <p:column headerText="Retorno" width="16%" >
+	          <h:outputText value="#{agendas.retornoSms}" />
+	       </p:column>
+	       
 	       <p:column headerText="Data/Hora" width="16%">
 	          <h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
 	       </p:column>
@@ -85,10 +89,13 @@
 	       
 	       <p:column  width="11%" exportable="false" >
 	       	<center>
-	           <p:commandButton ajax="true" id="excluir" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":agenda_frm:growl dt_agenda :agenda_frm:agenda_pnl">
+	           <p:commandButton ajax="true" id="excluir" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":agenda_frm:growl dt_agenda :agenda_frm:agenda_pnl">
 	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
 	           </p:commandButton>
-	           <p:commandButton ajax="false" id="editar" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":agenda_frm:growl dt_agenda" />
+	           <p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao ne 'A' }" />
+	           
+	           <p:commandButton ajax="false" id="editar" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":agenda_frm:growl dt_agenda" />
+	           <p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao ne 'A' }" />
 			</center>
 	       </p:column>
 	       
