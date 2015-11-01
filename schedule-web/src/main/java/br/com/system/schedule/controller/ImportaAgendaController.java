@@ -26,6 +26,7 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.ImportaAgenda;
+import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.ImportaAgendaService;
  
 @Model
@@ -39,6 +40,8 @@ public class ImportaAgendaController {
     
     private ImportaAgenda importaAgenda;
 	
+    private Usuario usuarioLogado;
+    
     @Produces
     @Named
     public ImportaAgenda getImportaAgenda() {
@@ -48,6 +51,8 @@ public class ImportaAgendaController {
     @PostConstruct
     public void initImportaAgenda() {
     	importaAgenda = new ImportaAgenda();
+    	usuarioLogado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+    	importaAgenda.setUsuario(usuarioLogado);
     }
     
     private void validarData(String dataString, String formato) throws Exception{
@@ -130,6 +135,7 @@ public class ImportaAgendaController {
         		agenda.setTipoCadastro("A");
         		agenda.setCelular(Long.parseLong(celular));
         		agenda.setNome(nome);
+        		agenda.setUsuario(usuarioLogado);
         		listaAgenda.add(agenda);
         	}
 
@@ -183,7 +189,7 @@ public class ImportaAgendaController {
     public List<ImportaAgenda> listarImportaAgenda() throws Exception{
     	List<ImportaAgenda> listaImportaAgenda = null;
     	try {
-    		listaImportaAgenda = importaAgendaService.listarImportaAgenda();	
+    		listaImportaAgenda = importaAgendaService.listarImportaAgenda(usuarioLogado);	
 		} catch (Exception e) {
 			String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");

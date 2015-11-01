@@ -29,6 +29,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import br.com.system.schedule.model.ImportaAgenda;
+import br.com.system.schedule.model.Usuario;
 
 @Stateless
 public class ImportaAgendaService {
@@ -69,6 +70,7 @@ public class ImportaAgendaService {
         }else{
         	try {
                 entityManager.remove(entityManager.getReference(ImportaAgenda.class, importaAgenda.getId()));
+                entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".excluirImportaAgenda() - Erro ao excluir agenda");
 				throw new Exception("Erro ao excluir agenda");
@@ -77,17 +79,18 @@ public class ImportaAgendaService {
     }
 
     
-	public List<ImportaAgenda> listarImportaAgenda() throws Exception {
+	public List<ImportaAgenda> listarImportaAgenda(Usuario usuario) throws Exception {
     	logger.info("Listando agenda importada");
         
         List<ImportaAgenda> listaImportaAgenda = new ArrayList<ImportaAgenda>();
-        String sql = " from ImportaAgenda a order by a.id desc";
+        String sql = " from ImportaAgenda a where a.usuario = :usuario order by a.id desc";
                 
     	try {
             listaImportaAgenda = (List<ImportaAgenda>)entityManager
         			.createQuery(sql.toString())
+        			.setParameter("usuario", usuario)
         			.getResultList();
-			
+            entityManager.flush();
 		} catch (NoResultException e) {
 			logger.log(Level.INFO, NOME_CLASS +".listarImportaAgenda() - Nenhuma importação de agenda cadastrada");
 			throw new Exception("Nenhuma importação de agenda cadastrada");

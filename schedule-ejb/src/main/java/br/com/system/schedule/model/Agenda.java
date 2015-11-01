@@ -66,14 +66,6 @@ public class Agenda implements Serializable {
 		this.id = id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public String getNome() {
 		return nome;
 	}
@@ -129,5 +121,12 @@ public class Agenda implements Serializable {
 	public void setRetornoSms(String retornoSms) {
 		this.retornoSms = retornoSms;
 	}
-	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}	
 }

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,6 +36,8 @@ public class ImportaAgenda implements Serializable {
 	@Column(length=100)
 	private String nomeArquivo;
 	
+	@ManyToOne(targetEntity=Usuario.class)
+	private Usuario usuario;
 	
 	@Max(value=1000, message="O valor deve ser menor que 1000")
 	@Min(value=1, message="O valor deve ser maior que 1")
@@ -84,6 +87,14 @@ public class ImportaAgenda implements Serializable {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 }

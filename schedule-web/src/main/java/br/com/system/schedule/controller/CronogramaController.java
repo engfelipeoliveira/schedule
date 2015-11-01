@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.system.schedule.model.Cronograma;
+import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.CronogramaService;
 
 @Model
@@ -25,6 +26,8 @@ public class CronogramaController {
     private CronogramaService cronogramaService;
     
     private Cronograma cronograma;
+    
+    private Usuario usuarioLogado;
 
     @Produces
     @Named
@@ -35,6 +38,8 @@ public class CronogramaController {
     @PostConstruct
     public void initCronograma() {
     	cronograma = new Cronograma();
+    	usuarioLogado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+    	cronograma.setUsuario(usuarioLogado);
     	cronograma.setDataInclusao(new Date());
     }
 
@@ -77,7 +82,7 @@ public class CronogramaController {
     public List<Cronograma> listarCronograma() throws Exception{
     	List<Cronograma> listaCronograma = null;
     	try {
-    		listaCronograma = cronogramaService.listarCronograma();	
+    		listaCronograma = cronogramaService.listarCronograma(usuarioLogado);	
 		} catch (Exception e) {
 			String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");

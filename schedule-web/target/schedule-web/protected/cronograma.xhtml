@@ -66,15 +66,15 @@
             </h:commandLink>
             </f:facet>
 	       
-	       <p:column headerText="Nome" width="79%" >
+	       <p:column headerText="Nome" width="78%" >
 	       	<h:outputText value="#{cronogramas.nome}" />
 	       </p:column>
 	       
-	       <p:column headerText="Horas" width="10%" >
+	       <p:column headerText="Horas Antes" width="15%" >
 	       	<h:outputText value="#{cronogramas.horaAntesEvento}" />
 	       </p:column>
 	       
-	       <p:column  width="11%" exportable="false" >
+	       <p:column  width="7%" exportable="false" >
 	       	<center>
 	           <p:commandButton ajax="true" id="excluir" actionListener="#{cronogramaController.excluirCronograma(cronogramas)}" title="Excluir" icon="ui-icon-trash" update=":cronograma_frm:growl dt_cronograma :cronograma_frm:cronograma_pnl">
 	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />

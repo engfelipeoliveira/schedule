@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.system.schedule.model.Agenda;
+import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.AgendaService;
 
 @Model
@@ -42,6 +43,8 @@ public class AgendaController {
     private AgendaService agendaService;
     
     private Agenda agenda;
+    
+    private Usuario usuarioLogado;
 
     private Locale localeCalendar = new Locale("pt", "BR");
     
@@ -54,6 +57,8 @@ public class AgendaController {
     @PostConstruct
     public void initAgenda() {
     	agenda = new Agenda();
+    	usuarioLogado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+    	agenda.setUsuario(usuarioLogado);
     	agenda.setDataInclusao(new Date());
     	agenda.setTipoCadastro("M");
     	agenda.setSituacao("A");
@@ -102,7 +107,7 @@ public class AgendaController {
     public List<Agenda> listarAgenda() throws Exception{
     	List<Agenda> listaAgenda = null;
     	try {
-    		listaAgenda = agendaService.listarAgenda();	
+    		listaAgenda = agendaService.listarAgenda(usuarioLogado);	
 		} catch (Exception e) {
 			String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");

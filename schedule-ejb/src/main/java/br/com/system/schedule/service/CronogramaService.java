@@ -28,6 +28,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import br.com.system.schedule.model.Cronograma;
+import br.com.system.schedule.model.Usuario;
 
 @Stateless
 public class CronogramaService {
@@ -49,6 +50,7 @@ public class CronogramaService {
         }else{
         	try {
         		entityManager.merge(cronograma);
+        		entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".inserirCronograma() - Erro ao inserir cronograma");
 				throw new Exception("Erro ao inserir cronograma");
@@ -65,6 +67,7 @@ public class CronogramaService {
         }else{
         	try {
                 entityManager.remove(entityManager.getReference(Cronograma.class, cronograma.getId()));
+                entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".excluirCronograma() - Erro ao excluir cronograma");
 				throw new Exception("Erro ao excluir cronograma");
@@ -72,17 +75,18 @@ public class CronogramaService {
         }
     }
     
-	public List<Cronograma> listarCronograma() throws Exception {
+	public List<Cronograma> listarCronograma(Usuario usuario) throws Exception {
     	logger.info("Listando cronograma");
         
         List<Cronograma> listaCronograma = new ArrayList<Cronograma>();
-        String sql = " from Cronograma c order by c.id desc";
+        String sql = " from Cronograma c where c.usuario = :usuario order by c.id desc";
                 
     	try {
             listaCronograma = (List<Cronograma>)entityManager
         			.createQuery(sql.toString())
+        			.setParameter("usuario", usuario)
         			.getResultList();
-			
+            entityManager.flush();
 		} catch (NoResultException e) {
 			logger.log(Level.INFO, NOME_CLASS +".listarCronograma() - Nenhum cronograma cadastrado");
 			throw new Exception("Nenhum cronograma cadastrado");

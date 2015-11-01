@@ -29,6 +29,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import br.com.system.schedule.model.Agenda;
+import br.com.system.schedule.model.Usuario;
 
 @Stateless
 public class AgendaService {
@@ -77,6 +78,7 @@ public class AgendaService {
         }else{
         	try {
         		entityManager.merge(agenda);
+        		entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".inserirAgenda() - Erro ao inserir agenda");
 				throw new Exception("Erro ao inserir agenda");
@@ -94,6 +96,7 @@ public class AgendaService {
         }else{
         	try {
                 entityManager.remove(entityManager.getReference(Agenda.class, agenda.getId()));
+                entityManager.flush();
 			} catch (PersistenceException e) {
 				logger.log(Level.INFO, NOME_CLASS +".excluirAgenda() - Erro ao excluir agenda");
 				throw new Exception("Erro ao excluir agenda");
@@ -102,21 +105,22 @@ public class AgendaService {
     }
     
     @SuppressWarnings("deprecation")
-	public List<Agenda> listarAgenda() throws Exception {
+	public List<Agenda> listarAgenda(Usuario usuario) throws Exception {
     	logger.info("Listando agenda");
         
     	Date dataAtual = new Date();
     	dataAtual.setMonth(dataAtual.getMonth()-1);
     	
         List<Agenda> listaAgenda = new ArrayList<Agenda>();
-        String sql = " from Agenda a where a.dataEvento >= :dataAtual order by a.dataEvento desc";
+        String sql = " from Agenda a where a.dataEvento >= :dataAtual and a.usuario = :usuario order by a.dataEvento desc";
                 
     	try {
             listaAgenda = (List<Agenda>)entityManager
         			.createQuery(sql.toString())
         			.setParameter("dataAtual", dataAtual)
+        			.setParameter("usuario", usuario)
         			.getResultList();
-			
+            entityManager.flush();
 		} catch (NoResultException e) {
 			logger.log(Level.INFO, NOME_CLASS +".listarAgenda() - Nenhuma agenda cadastrada");
 			throw new Exception("Nenhuma agenda cadastrada");

@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.UsuarioService;
@@ -51,16 +52,31 @@ public class UsuarioController {
 
     public String login() throws Exception {
         try {
-            usuarioService.login(usuario.getEmail(), usuario.getSenha());
-            return "/protected/agenda.jsf";
+            Usuario usuarioLogado = usuarioService.login(usuario.getEmail(), usuario.getSenha());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
+            return "/protected/agenda.jsf?faces-redirect=true";
         } catch (Exception e) {
             String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
             facesContext.addMessage(null, m);
-            return "index.jsf";
+            return "index.jsf?faces-redirect=true";
         }
     }
 
+
+    public String logout() throws Exception {
+        try {
+        	HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);  
+            sessao.invalidate();  
+            
+            return "index";
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
+            facesContext.addMessage(null, m);
+            return "index.jsf?faces-redirect=true";
+        }
+    }
     
 
     private String getRootErrorMessage(Exception e) {

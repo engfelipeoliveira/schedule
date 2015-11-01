@@ -11,9 +11,10 @@
       <h1>Cadastrar Agenda</h1>
       
       <h:form id="agenda_frm">
+      	
       	<p:focus for="nome" id="focus" />
       	<p:growl id="growl" life="3000" />
-      	<h:outputText id="id" value="#{agenda.id}" />
+      	<h:inputHidden id="id" value="#{agenda.id}" />
       	
          <h:panelGrid columns="2" columnClasses="titleCell" id="agenda_pnl">
             <h:outputLabel for="nome" value="Nome*:"/>
@@ -65,29 +66,29 @@
 	       <p:column headerText="Nome" width="37%" >
 	       	<h:outputText value="#{agendas.nome}" />
 	       </p:column>
-	       <p:column headerText="Celular" width="16%" >
+	       <p:column headerText="Celular" width="12%" >
 	          <h:outputText value="(#{agendas.celular.toString().substring(0,2)})#{agendas.celular.toString().substring(2,3)}.#{agendas.celular.toString().substring(3,7)}-#{agendas.celular.toString().substring(7,11)}" />
 	       </p:column>
-	       <p:column headerText="Retorno" width="16%" >
+	       <p:column headerText="Retorno" width="13%" >
 	          <h:outputText value="#{agendas.retornoSms}" />
 	       </p:column>
 	       
-	       <p:column headerText="Data/Hora" width="16%">
+	       <p:column headerText="Data/Hora" width="12%">
 	          <h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
 	       </p:column>
-	       <p:column headerText="Tipo" width="10%" >
+	       <p:column headerText="Tipo" width="8%" >
 	        <h:outputText value="Manual" rendered="#{agendas.tipoCadastro eq 'M'}" />
 	       	<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
 	       	<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
 	       </p:column>
 
-	       <p:column headerText="Situação" width="10%" >
+	       <p:column headerText="Situação" width="8%" >
 	        <h:outputText value="Agendado" rendered="#{agendas.situacao eq 'A'}" />
 	       	<h:outputText value="Enviado" rendered="#{agendas.situacao eq 'E'}" />
 	       	<h:outputText value="Falha" rendered="#{agendas.situacao eq 'F'}" />
 	       </p:column>
 	       
-	       <p:column  width="11%" exportable="false" >
+	       <p:column  width="8%" exportable="false" >
 	       	<center>
 	           <p:commandButton ajax="true" id="excluir" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":agenda_frm:growl dt_agenda :agenda_frm:agenda_pnl">
 	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
