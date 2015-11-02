@@ -20,6 +20,7 @@ body {
   background-repeat: repeat-x;
   padding-top: 5px;
   box-shadow: 3px 3px 3px #d5d5d5;
+  height:600px;
 }
 #content {
   float: left;

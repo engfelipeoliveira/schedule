@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
@@ -35,6 +37,8 @@ public class Usuario implements Serializable {
 	private String email;
 	
 	@NotNull
+	@Min(value=6, message="Senha deve conter no mínimo 6 caracteres")
+	@Max(value=10, message="Senha deve conter non máximo 10 caracteres")
 	private String senha;
 	
 	private Long telefone;

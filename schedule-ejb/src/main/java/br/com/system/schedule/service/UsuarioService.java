@@ -41,6 +41,22 @@ public class UsuarioService {
     
     private static final Locale LOCALE_PTBR = new Locale("pt", "BR");
     
+    public void alterarSenha(Usuario usuario) throws Exception{
+    	logger.info("Alterando senha");
+    	
+    	if(usuario == null){
+    		logger.log(Level.INFO, NOME_CLASS +".alterarSenha() - Usuario e obrigatorio");
+    		throw new Exception("Usuario e obrigatorio");
+    	}else{
+    		Encriptor encriptor = new Encriptor();
+            String senhaCript = encriptor.criptografar(usuario.getSenha());
+            usuario.setSenha(senhaCript);
+	    	entityManager.merge(usuario);
+	    	entityManager.flush();
+    	}
+    }
+    
+    
     public Usuario login(String email, String senha) throws Exception {
     	logger.info("Consultando usuario por email e senha");
         logger.info("Email: " + email);

@@ -38,6 +38,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
     
     private Usuario usuario;
+    
+    private String novaSenha;
+    
+    private String repitaNovaSenha;
+    
+    private Usuario usuarioLogado;
 
     @Produces
     @Named
@@ -47,9 +53,43 @@ public class UsuarioController {
     
     @PostConstruct
     public void initUsuario() {
+    	novaSenha=null;
+		repitaNovaSenha=null;
+    	usuarioLogado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
     	usuario = new Usuario();
     }
 
+    
+    public void alterarSenha() throws Exception {
+    	try {
+    		if(novaSenha == null || "".equals(novaSenha)){
+    			novaSenha=null;
+    			repitaNovaSenha=null;
+    			throw new Exception("Senha é obrigatória");
+    		}
+    		
+    		if(repitaNovaSenha == null || "".equals(repitaNovaSenha)){
+    			novaSenha=null;
+    			repitaNovaSenha=null;
+    			throw new Exception("Senha é obrigatória");
+    		}
+    		
+    		if(!repitaNovaSenha.equals(novaSenha)){
+    			novaSenha=null;
+    			repitaNovaSenha=null;
+    			throw new Exception("Senhas não conferem");
+    		}
+    		
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso", "Sucesso"));
+            usuarioLogado.setSenha(novaSenha);
+            usuarioService.alterarSenha(usuarioLogado);
+    	} catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
+            facesContext.addMessage(null, m);
+        }
+    }
+    
     public String login() throws Exception {
         try {
             Usuario usuarioLogado = usuarioService.login(usuario.getEmail(), usuario.getSenha());
@@ -97,4 +137,28 @@ public class UsuarioController {
         // This is the root cause message
         return errorMessage;
     }
+
+	public String getNovaSenha() {
+		return novaSenha;
+	}
+
+	public void setNovaSenha(String novaSenha) {
+		this.novaSenha = novaSenha;
+	}
+
+	public String getRepitaNovaSenha() {
+		return repitaNovaSenha;
+	}
+
+	public void setRepitaNovaSenha(String repitaNovaSenha) {
+		this.repitaNovaSenha = repitaNovaSenha;
+	}
+
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	public void setUsuarioLogado(Usuario usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+	}
 }
