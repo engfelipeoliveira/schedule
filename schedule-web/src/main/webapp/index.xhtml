@@ -4,27 +4,35 @@
    xmlns:ui="http://java.sun.com/jsf/facelets"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
    template="/WEB-INF/templates/defaultlogin.xhtml">
    <ui:define name="content">
+
       <h1>Login</h1>
-
-      <h:form id="login" >
-         <h:panelGrid columns="3" columnClasses="titleCell">
-            <h:outputLabel for="email" value="Email:"/>
-            <h:inputText id="email" value="#{usuario.email}" required="true" requiredMessage="E-mail obrigatório" />
-            <h:message for="email" errorClass="invalid"/>
-
+      
+      <h:form id="login_frm">
+      	
+      	<p:focus for="email" id="focus" />
+      	<p:growl id="growl" life="3000" />
+      	
+         <h:panelGrid columns="2" columnClasses="titleCell" id="login_pnl">
+         
+            <h:outputLabel for="email" value="E-mail:"/>
+            <p:inputText placeholder="Informe o e-mail" size="30" id="email" value="#{usuario.email}" maxlength="100" required="true" requiredMessage="E-mail é obrigatório" />
+			
             <h:outputLabel for="senha" value="Senha:"/>
-            <h:inputSecret id="senha" value="#{usuario.senha}" required="true" requiredMessage="Senha obrigatória"/>
-            <h:message for="senha" errorClass="invalid"/>
+            <p:password placeholder="Informe a senha" size="30" id="senha" value="#{usuario.senha}" maxlength="100" required="true" requiredMessage="Senha é obrigatória" />
+
          </h:panelGrid>
+         
          <p>
-            <h:panelGrid columns="2">
-               <h:commandButton id="login" action="#{usuarioController.login()}" value="Login" styleClass="register"/>
-               <h:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning"
-                           globalOnly="true"/>
+            <h:panelGrid columns="1" >
+               <p:commandButton ajax="true" id="logar" update="growl login_frm" actionListener="#{usuarioController.login()}" value="Entrar" icon="ui-icon-locked" oncomplete="javascript:window.location.assign('protected/agenda.jsf')" />
             </h:panelGrid>
          </p>
+         
       </h:form>
+
+
    </ui:define>
 </ui:composition>
