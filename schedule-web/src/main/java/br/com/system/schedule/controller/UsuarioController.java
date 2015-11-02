@@ -16,6 +16,9 @@
  */
 package br.com.system.schedule.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -45,6 +48,8 @@ public class UsuarioController {
     
     private Usuario usuarioLogado;
 
+    private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,10})";
+    
     @Produces
     @Named
     public Usuario getUsuario() {
@@ -78,6 +83,13 @@ public class UsuarioController {
     			novaSenha=null;
     			repitaNovaSenha=null;
     			throw new Exception("Senhas não conferem");
+    		}
+    		
+    		Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+    		Matcher matcher = pattern.matcher(novaSenha);
+  		  	
+    		if(!matcher.matches()){
+    			throw new Exception("Senha não respeita as diretrizes");
     		}
     		
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso", "Sucesso"));
