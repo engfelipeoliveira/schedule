@@ -8,9 +8,9 @@
    <ui:define name="content">
       <h1>Login</h1>
 
-      <h:form id="login">
+      <h:form id="login" >
          <h:panelGrid columns="3" columnClasses="titleCell">
-            <h:outputLabel for="email" value="E-mail:"/>
+            <h:outputLabel for="email" value="Email:"/>
             <h:inputText id="email" value="#{usuario.email}" required="true" requiredMessage="E-mail obrigatório" />
             <h:message for="email" errorClass="invalid"/>
 

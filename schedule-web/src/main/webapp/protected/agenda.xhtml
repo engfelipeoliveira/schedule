@@ -8,7 +8,7 @@
    
    <ui:define name="content">
    
-      <h1>Cadastrar Agenda</h1>
+      <h1>Agenda</h1>
       
       <h:form id="agenda_frm">
       	
@@ -17,6 +17,7 @@
       	<h:inputHidden id="id" value="#{agenda.id}" />
       	
          <h:panelGrid columns="2" columnClasses="titleCell" id="agenda_pnl">
+         
             <h:outputLabel for="nome" value="Nome*:"/>
             <p:inputText placeholder="Informe o nome completo" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
 			

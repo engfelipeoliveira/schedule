@@ -41,29 +41,29 @@
 </h:head>
 <h:body>
    <div id="container" >
+         <div class="dualbrand">
+         <img src="../resources/gfx/dualbrand_logo.png" />
+      	 </div>
+   
+   
       <div id="aside">
       <h:form id="formmenu" style="border:0px">
-	         <p>Menu:</p>
-	         <ul>
-	            <li><a href="cronograma.jsf">Meus Dados</a></li>
-	            <li><a href="agenda.jsf">Cadastrar Agenda</a></li>
-	            <li><a href="importaagenda.jsf">Importar Agenda</a></li>
-	            <li><a href="cronograma.jsf">Cadastrar Cronograma</a></li>
-	            <li><a href="alterasenha.jsf">Alterar Senha</a></li>
-	            <li>
-	            <p:commandLink ajax="true" value="Sair" id="sair" actionListener="#{usuarioController.logout()}" oncomplete="javascript:window.location.assign('index.jsf')" title="Sair">
-	           	<p:confirm header="Sair" message="Tem certeza que deseja sair?" icon="ui-icon-alert" />
-	           </p:commandLink>
-	            
-	            </li>
-	         </ul>
-	         
-	         
-	         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-       </p:confirmDialog>
-	         
+      	<p:menu style="width:88%">
+      		<p:submenu label="Cadastro">
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Agenda" action="agenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Cronograma" action="cronograma.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Integração" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Arquivo" action="importaagenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Webservice" action="integraagenda.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Minha Conta" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Alterar Senha" action="alterasenha.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Relatório" action="utilizacao.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:separator />
+      		<p:menuitem value="Sair" icon="ui-icon-close" actionListener="#{usuarioController.logout()}" ajax="true" oncomplete="javascript:window.location.assign('index.jsf')" />
+      	</p:menu>
 	         
 	         </h:form>
       </div>
