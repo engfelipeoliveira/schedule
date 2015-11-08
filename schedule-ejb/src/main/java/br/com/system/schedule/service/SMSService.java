@@ -41,7 +41,7 @@ public class SMSService {
 	
 	private final static String PREFIXO = "SMS_";
 	
-	@Schedule(hour = "*", minute = "*/1")
+	//@Schedule(hour = "*", minute = "*/1")
 	public void jobEnvioSMS() throws Exception{
 		logger.log(Level.INFO, "JOB Envia SMS");
 		List<Agenda> listaAgenda = listarAgenda();
@@ -99,7 +99,8 @@ public class SMSService {
     	
         List<Agenda> listaAgenda = new ArrayList<Agenda>();
         StringBuilder sql = new StringBuilder();
-        sql.append("  from Agenda a ");
+        sql.append("  from Usuario u ");
+        sql.append("  inner join u.agenda a ");
         sql.append(" where a.situacao = :situacao ");
                 
     	try {

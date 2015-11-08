@@ -2,10 +2,14 @@ package br.com.system.schedule.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +30,12 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@OneToMany(targetEntity=Agenda.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Agenda> agenda;
+	
+	@OneToMany(targetEntity=Cronograma.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Cronograma> cronograma;
 	
 	@NotNull
 	private String nome;
@@ -100,6 +110,22 @@ public class Usuario implements Serializable {
 
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = dataInclusao;
+	}
+
+	public List<Agenda> getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(List<Agenda> agenda) {
+		this.agenda = agenda;
+	}
+
+	public List<Cronograma> getCronograma() {
+		return cronograma;
+	}
+
+	public void setCronograma(List<Cronograma> cronograma) {
+		this.cronograma = cronograma;
 	}
 
 }

@@ -49,6 +49,11 @@
 	<version>2.6.12</version>
 </dependency>
 
+<dependency>  
+    <groupId>org.primefaces.themes</groupId>  
+    <artifactId>all-themes</artifactId>  
+    <version>1.0.10</version>  
+</dependency> 
 
       <!-- Dependency on the EJB module so we can use it's services if needed -->
       <dependency>

@@ -6,92 +6,67 @@
    xmlns:p="http://primefaces.org/ui"
    template="/WEB-INF/templates/default.xhtml">
    
-   <ui:define name="content">
-   
-      <h1>Cronograma</h1>
-      
-      <h:form id="cronograma_frm">
-      
-      	<p:focus for="nome" id="focus" />
-      	<p:growl id="growl" life="3000" />
-      	<h:inputHidden id="id" value="#{cronograma.id}" />
-         <h:panelGrid columns="3" columnClasses="titleCell" id="cronograma_pnl">
-         
-            <h:outputLabel for="nome" value="Nome*:"/>
-            <p:inputText placeholder="Informe o nome" size="30" id="nome" value="#{cronograma.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
-			<h:outputText />
-			
-            <h:outputLabel for="texto" value="Texto*:" />
-            <p:inputTextarea counter="contador" id="texto" value="#{cronograma.texto}" placeholder="Informe o texto da mensagem. Utilize as váriaveis #REMETENTE, #DESTINATARIO, #DATA e #HORA" maxlength="160" cols="30" rows="4" required="true" requiredMessage="Texto é obrigatório" />
-            <h:outputText id="contador" />
-
-            <h:outputLabel for="horaAntesEvento" value="Horas*:"/>
-            <p:inputMask mask="9?999" placeholder="Informe quantas horas antes" size="30" id="horaAntesEvento" value="#{cronograma.horaAntesEvento}" maxlength="4" required="true" requiredMessage="Horas é obrigatório" />
-			<h:outputText />
-			
-			<h:outputLabel for="dataEvento" value="Cadastro:"/>
-       		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{cronograma.dataInclusao}" />
-			<h:outputText />
-			
-         </h:panelGrid>
-         <p>
-            <h:panelGrid columns="3" >
-               <p:commandButton ajax="false" id="incluir" update="growl :cronograma_grid_frm" actionListener="#{cronogramaController.inserirCronograma()}" value="Salvar" icon="ui-icon-disk" />
-               
-               <p:commandButton value="Cancelar" id="cancelar" update="cronograma_pnl id focus" process="@this" icon="ui-icon-cancel" >
-                <p:resetInput target="cronograma_pnl id" />
-            </p:commandButton>
-            
-            <h:outputText value="(*) Dados Obrigatórios" />
-               
-            </h:panelGrid>
-         </p>
-         
-      </h:form>
-      
-      <p>
-      <h:form id="cronograma_grid_frm">
-         <p:dataTable id="dt_cronograma" var="cronogramas" emptyMessage="Nenhum registro" value="#{cronogramaController.listarCronograma()}"
-         paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
-         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
-	       <f:facet name="{Exporters}">
-	       <h:commandLink>
-                Excel
-                <p:dataExporter type="xls" target="dt_cronograma" fileName="cronogramas" />
-            </h:commandLink>
-            |
-	       <h:commandLink>
-                PDF
-                <p:dataExporter type="pdf" target="dt_cronograma" fileName="cronogramas" />
-            </h:commandLink>
-            </f:facet>
-	       
-	       <p:column headerText="Nome" width="78%" >
-	       	<h:outputText value="#{cronogramas.nome}" />
-	       </p:column>
-	       
-	       <p:column headerText="Horas Antes" width="15%" >
-	       	<h:outputText value="#{cronogramas.horaAntesEvento}" />
-	       </p:column>
-	       
-	       <p:column  width="7%" exportable="false" >
-	       	<center>
-	           <p:commandButton ajax="true" id="excluir" actionListener="#{cronogramaController.excluirCronograma(cronogramas)}" title="Excluir" icon="ui-icon-trash" update=":cronograma_frm:growl dt_cronograma :cronograma_frm:cronograma_pnl">
-	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
-	           </p:commandButton>
-	           <p:commandButton ajax="false" id="editar" actionListener="#{cronogramaController.selecionarCronograma(cronogramas)}" title="Editar" icon="ui-icon-pencil" update=":cronograma_frm:growl dt_cronograma" />
-			</center>
-	       </p:column>
-	       
-	   </p:dataTable>
-	   
-	   
-	   <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-       </p:confirmDialog>
-	   
-      </h:form>
-      </p>
+   <ui:define name="titulo">
+   	Cronograma
    </ui:define>
+   
+   <ui:define name="formulario">
+   	<p:focus for="nome" id="focus" />
+   	<h:inputHidden id="id" value="#{cronograma.id}" />
+   	<h:panelGrid columns="3" columnClasses="titleCell" id="painel">
+		<h:outputLabel for="nome" value="Nome*:"/>
+		<p:inputText placeholder="Informe o nome" size="30" id="nome" value="#{cronograma.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
+		<h:outputText />
+         <h:outputLabel for="texto" value="Texto*:" />
+         <p:inputTextarea counter="contador" id="texto" value="#{cronograma.texto}" placeholder="Informe o texto da mensagem. Utilize as váriaveis #REMETENTE, #DESTINATARIO, #DATA e #HORA" maxlength="160" cols="30" rows="4" required="true" requiredMessage="Texto é obrigatório" />
+         <h:outputText id="contador" />
+         <h:outputLabel for="horaAntesEvento" value="Horas*:"/>
+         <p:inputMask mask="9?999" placeholder="Informe quantas horas antes" size="30" id="horaAntesEvento" value="#{cronograma.horaAntesEvento}" maxlength="4" required="true" requiredMessage="Horas é obrigatório" />
+		 <h:outputText />
+		 <h:outputLabel for="dataInclusao" value="Cadastro:"/>
+		 <p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{cronograma.dataInclusao}" />
+		 <h:outputText />
+	</h:panelGrid>
+	<p>
+		<h:panelGrid columns="3" >
+			<p:commandButton ajax="false" id="incluir" update="growl :lista" actionListener="#{cronogramaController.inserirCronograma()}" value="Salvar" icon="ui-icon-disk" />
+			<p:commandButton value="Cancelar" id="cancelar" update="painel id focus" process="@this" icon="ui-icon-cancel" >
+				<p:resetInput target="painel id" />
+            </p:commandButton>
+            <h:outputText value="(*) Dados Obrigatórios" />
+		</h:panelGrid>
+	</p>
+   </ui:define>
+   
+   <ui:define name="lista">
+   	<p:dataTable id="grid" var="cronogramas" emptyMessage="Nenhum registro" value="#{cronogramaController.listarCronograma()}"
+   	paginator="true" rows="6" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
+   	paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
+	   	<f:facet name="{Exporters}">
+	   		<h:commandLink>
+	   			Excel
+	   			<p:dataExporter type="xls" target="grid" fileName="cronogramas" />
+			</h:commandLink>
+			|
+			<h:commandLink>
+				PDF
+				<p:dataExporter type="pdf" target="grid" fileName="cronogramas" />
+			</h:commandLink>
+		</f:facet>
+		<p:column headerText="Nome" width="70%" >
+			<h:outputText value="#{cronogramas.nome}" />
+		</p:column>
+		<p:column headerText="Horas Antes" width="20%" >
+			<h:outputText value="#{cronogramas.horaAntesEvento}" />
+		</p:column>
+		<p:column  width="10%" exportable="false" >
+			<center>
+				<p:commandButton ajax="true" id="excluir" actionListener="#{cronogramaController.excluirCronograma(cronogramas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
+					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
+				</p:commandButton>
+				<p:commandButton ajax="false" id="editar" actionListener="#{cronogramaController.selecionarCronograma(cronogramas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
+			</center>
+		</p:column>
+	</p:dataTable>
+   </ui:define>   
 </ui:composition>

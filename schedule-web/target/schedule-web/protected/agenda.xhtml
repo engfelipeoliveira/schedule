@@ -6,109 +6,80 @@
    xmlns:p="http://primefaces.org/ui"
    template="/WEB-INF/templates/default.xhtml">
    
-   <ui:define name="content">
-   
-      <h1>Cadastrar Agenda</h1>
-      
-      <h:form id="agenda_frm">
-      	
-      	<p:focus for="nome" id="focus" />
-      	<p:growl id="growl" life="3000" />
-      	<h:inputHidden id="id" value="#{agenda.id}" />
-      	
-         <h:panelGrid columns="2" columnClasses="titleCell" id="agenda_pnl">
-            <h:outputLabel for="nome" value="Nome*:"/>
-            <p:inputText placeholder="Informe o nome completo" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
-			
-            <h:outputLabel for="celular" value="Celular*:"/>
-            <p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.celular}" required="true" requiredMessage="Celular é obrigatório"/>
+   <ui:define name="titulo">
+   	Agenda
+   </ui:define>
 
-       		<h:outputLabel for="dataEvento" value="Data/Hora*:"/>
-       		<p:calendar id="dataEvento" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agenda.dataEvento}" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="true" />
-       		
-       		<h:outputLabel for="dataEvento" value="Cadastro:"/>
-       		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{agenda.dataInclusao}" />
-         </h:panelGrid>
-         
-         <p>
-            <h:panelGrid columns="3" >
-               <p:commandButton ajax="false" id="incluir" update="growl :agenda_grid_frm" actionListener="#{agendaController.inserirAgenda()}" value="Salvar" icon="ui-icon-disk" />
-               
-               <p:commandButton value="Cancelar" id="cancelar" update="agenda_pnl id focus :agenda_grid_frm:dt_agenda" process="@this" icon="ui-icon-cancel" >
-                <p:resetInput target="agenda_pnl id" />
-            </p:commandButton>
-            
-            <h:outputText value="(*) Dados Obrigatórios" />
-               
-            </h:panelGrid>
-         </p>
-         
-      </h:form>
-      
-      <p>
-      <h:form id="agenda_grid_frm">
-      <p:poll interval="10" update="dt_agenda" />
-         <p:dataTable id="dt_agenda" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
-         paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
-         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
-	       <f:facet name="{Exporters}">
-	       <h:commandLink>
-                Excel
-                <p:dataExporter type="xls" target="dt_agenda" fileName="agendas" />
-            </h:commandLink>
-            |
-	       <h:commandLink>
-                PDF
-                <p:dataExporter type="pdf" target="dt_agenda" fileName="agendas" />
-            </h:commandLink>
-            </f:facet>
-	       
-	       <p:column headerText="Nome" width="37%" >
-	       	<h:outputText value="#{agendas.nome}" />
-	       </p:column>
-	       <p:column headerText="Celular" width="12%" >
-	          <h:outputText value="(#{agendas.celular.toString().substring(0,2)})#{agendas.celular.toString().substring(2,3)}.#{agendas.celular.toString().substring(3,7)}-#{agendas.celular.toString().substring(7,11)}" />
-	       </p:column>
-	       <p:column headerText="Retorno" width="13%" >
-	          <h:outputText value="#{agendas.retornoSms}" />
-	       </p:column>
-	       
-	       <p:column headerText="Data/Hora" width="12%">
-	          <h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
-	       </p:column>
-	       <p:column headerText="Tipo" width="8%" >
-	        <h:outputText value="Manual" rendered="#{agendas.tipoCadastro eq 'M'}" />
-	       	<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
-	       	<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
-	       </p:column>
+   <ui:define name="formulario">
+   	<p:focus for="nome" id="focus" />
+   	<h:inputHidden id="id" value="#{agenda.id}" />
+   	<h:panelGrid columns="2" clumnClasses="titleCell" id="painel">
+   		<h:outputLabel for="nome" value="Nome*:"/>
+		<p:inputText placeholder="Informe o nome completo" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
+		<h:outputLabel for="celular" value="Celular*:"/>
+		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.celular}" required="true" requiredMessage="Celular é obrigatório"/>
+		<h:outputLabel for="dataEvento" value="Data/Hora*:"/>
+		<p:calendar id="dataEvento" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agenda.dataEvento}" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="true" />
+		<h:outputLabel for="dataInclusao" value="Cadastro:"/>
+		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{agenda.dataInclusao}" />
+	</h:panelGrid>
+	<h:panelGrid columns="3">
+		<p:commandButton ajax="false" id="incluir" update="growl :lista" actionListener="#{agendaController.inserirAgenda()}" value="Salvar" icon="ui-icon-disk" />
+		<p:commandButton value="Cancelar" id="cancelar" update="painel id focus :lista:grid" process="@this" icon="ui-icon-cancel" >
+			<p:resetInput target="painel id" />
+		</p:commandButton>
+		<h:outputText value="(*) Dados Obrigatórios" />
+	</h:panelGrid>
+   </ui:define>
 
-	       <p:column headerText="Situação" width="8%" >
-	        <h:outputText value="Agendado" rendered="#{agendas.situacao eq 'A'}" />
-	       	<h:outputText value="Enviado" rendered="#{agendas.situacao eq 'E'}" />
-	       	<h:outputText value="Falha" rendered="#{agendas.situacao eq 'F'}" />
-	       </p:column>
-	       
-	       <p:column  width="8%" exportable="false" >
-	       	<center>
-	           <p:commandButton ajax="true" id="excluir" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":agenda_frm:growl dt_agenda :agenda_frm:agenda_pnl">
-	           	<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
-	           </p:commandButton>
-	           <p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao ne 'A' }" />
-	           
-	           <p:commandButton ajax="false" id="editar" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":agenda_frm:growl dt_agenda" />
-	           <p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao ne 'A' }" />
+   <ui:define name="lista">
+   	<p:poll interval="10" update="grid" />
+   	<p:dataTable id="grid" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
+   	paginator="true" rows="6" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
+   	paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
+	   	<f:facet name="{Exporters}">
+	   		<h:commandLink>
+	   			Excel
+				<p:dataExporter type="xls" target="grid" fileName="agendas" />
+			</h:commandLink>
+			|
+			<h:commandLink>
+				PDF
+				<p:dataExporter type="pdf" target="grid" fileName="agendas" />
+			</h:commandLink>
+		</f:facet>
+		<p:column headerText="Nome" width="34%" >
+			<h:outputText value="#{agendas.nome}" />
+		</p:column>
+		<p:column headerText="Celular" width="12%" >
+			<h:outputText value="(#{agendas.celular.toString().substring(0,2)})#{agendas.celular.toString().substring(2,3)}.#{agendas.celular.toString().substring(3,7)}-#{agendas.celular.toString().substring(7,11)}" />
+		</p:column>
+		<p:column headerText="Retorno" width="13%" >
+			<h:outputText value="#{agendas.retornoSms}" />
+		</p:column>
+		<p:column headerText="Data/Hora" width="13%">
+			<h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
+		</p:column>
+		<p:column headerText="Tipo" width="9%" >
+			<h:outputText value="Manual" rendered="#{agendas.tipoCadastro eq 'M'}" />
+			<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
+			<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
+		</p:column>
+		<p:column headerText="Situação" width="9%" >
+	 		<h:outputText value="Agendado" rendered="#{agendas.situacao eq 'A'}" />
+			<h:outputText value="Enviado" rendered="#{agendas.situacao eq 'E'}" />
+			<h:outputText value="Falha" rendered="#{agendas.situacao eq 'F'}" />
+		</p:column>
+		<p:column  width="10%" exportable="false" >
+			<center>
+				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
+					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
+				</p:commandButton>
+				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao ne 'A' }" />
+				<p:commandButton ajax="false" id="editar" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
+				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao ne 'A' }" />
 			</center>
-	       </p:column>
-	       
-	   </p:dataTable>
-	   
-	   
-	   <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-       </p:confirmDialog>
-	   
-      </h:form>
-      </p>
+	     </p:column>
+	</p:dataTable>
    </ui:define>
 </ui:composition>

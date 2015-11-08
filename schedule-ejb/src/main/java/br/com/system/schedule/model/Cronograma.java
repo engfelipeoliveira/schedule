@@ -26,6 +26,7 @@ public class Cronograma implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
+	@NotNull
 	@ManyToOne(targetEntity=Usuario.class)
 	private Usuario usuario;
 	

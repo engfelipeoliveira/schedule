@@ -5,13 +5,9 @@
    xmlns:p="http://primefaces.org/ui"
    xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-   <title>SMS</title>
+   <title>SOS Agenda</title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <h:outputStylesheet name="css/screen.css" />
-<h:outputStylesheet name="css/bootstrap.min.css" />
-<h:outputStylesheet name="css/font-awesome.min.css" />
-<h:outputStylesheet name="css/ionicons.min.css" />
-<h:outputStylesheet name="css/css/AdminLTE.css" />
 
     <script>  
                 PrimeFaces.locales['pt'] = {  
@@ -45,37 +41,60 @@
 </h:head>
 <h:body>
    <div id="container" >
+         <div class="dualbrand">
+         <img src="../resources/gfx/dualbrand_logo.png" />
+      	 </div>
+   
+   
       <div id="aside">
       <h:form id="formmenu" style="border:0px">
-	         <p>Menu:</p>
-	         <ul>
-	            <li><a href="cronograma.jsf">Meus Dados</a></li>
-	            <li><a href="agenda.jsf">Cadastrar Agenda</a></li>
-	            <li><a href="importaagenda.jsf">Importar Agenda</a></li>
-	            <li><a href="cronograma.jsf">Cadastrar Cronograma</a></li>
-	            <li><a href="alterasenha.jsf">Alterar Senha</a></li>
-	            <li>
-	            <p:commandLink ajax="true" value="Sair" id="sair" actionListener="#{usuarioController.logout()}" oncomplete="javascript:window.location.assign('index.jsf')" title="Sair">
-	           	<p:confirm header="Sair" message="Tem certeza que deseja sair?" icon="ui-icon-alert" />
-	           </p:commandLink>
-	            
-	            </li>
-	         </ul>
-	         
-	         
-	         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-       </p:confirmDialog>
-	         
+      	<p:menu style="width:88%">
+      		<p:submenu label="Cadastro">
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Agenda" action="agenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Cronograma" action="cronograma.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Integração" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Arquivo" action="importaagenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="WebService" action="integraagenda.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Minha Conta" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Alterar Senha" action="alterasenha.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Relatório" action="utilizacao.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:separator />
+      		<p:menuitem value="Sair" icon="ui-icon-close" actionListener="#{usuarioController.logout()}" ajax="true" oncomplete="javascript:window.location.assign('index.jsf')" />
+      	</p:menu>
 	         
 	         </h:form>
       </div>
 
       <div id="content">
-         <ui:insert name="content">
-                    [Template content will be inserted here]
-         </ui:insert>
+         <h1>
+	         <ui:insert name="titulo">
+	         	[Template titulo das paginas]
+	         </ui:insert>
+		 </h1>
+         
+         <h:form id="formulario" style="height: 200px">
+         	<p:growl id="growl" life="3000" />
+         	<ui:insert name="formulario">
+         		[Template formulario]
+         	</ui:insert>
+         </h:form>
+         
+         <p>
+	         <h:form id="lista" style="height: 250px">
+	         	<ui:insert name="lista">
+	         		[Template lista]
+	         	</ui:insert>
+	         </h:form>
+	     </p>
+
+         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		 </p:confirmDialog>
+         
       </div>
       <div id="footer">
       </div>

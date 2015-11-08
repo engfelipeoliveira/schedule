@@ -5,7 +5,7 @@
    xmlns:p="http://primefaces.org/ui"
    xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-   <title>SMS</title>
+   <title>SOS Agenda</title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <h:outputStylesheet name="css/screen.css" />
 
@@ -55,7 +55,7 @@
       		</p:submenu>
       		<p:submenu label="Integração" >
       			<p:menuitem icon="ui-icon-carat-1-e" value="Arquivo" action="importaagenda.jsf" ajax="false" />
-      			<p:menuitem icon="ui-icon-carat-1-e" value="Webservice" action="integraagenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="WebService" action="integraagenda.jsf" ajax="false" />
       		</p:submenu>
       		<p:submenu label="Minha Conta" >
       			<p:menuitem icon="ui-icon-carat-1-e" value="Alterar Senha" action="alterasenha.jsf" ajax="false" />
@@ -69,9 +69,32 @@
       </div>
 
       <div id="content">
-         <ui:insert name="content">
-                    [Template content will be inserted here]
-         </ui:insert>
+         <h1>
+	         <ui:insert name="titulo">
+	         	[Template titulo das paginas]
+	         </ui:insert>
+		 </h1>
+         
+         <h:form id="formulario" style="height: 200px">
+         	<p:growl id="growl" life="3000" />
+         	<ui:insert name="formulario">
+         		[Template formulario]
+         	</ui:insert>
+         </h:form>
+         
+         <p>
+	         <h:form id="lista" style="height: 250px">
+	         	<ui:insert name="lista">
+	         		[Template lista]
+	         	</ui:insert>
+	         </h:form>
+	     </p>
+
+         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		 </p:confirmDialog>
+         
       </div>
       <div id="footer">
       </div>
