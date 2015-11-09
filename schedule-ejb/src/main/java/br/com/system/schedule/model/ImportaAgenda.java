@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +29,7 @@ public class ImportaAgenda implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(targetEntity=Agenda.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Agenda.class, fetch=FetchType.EAGER)
 	private List<Agenda> agenda;
 	
 	@Column(length=100)

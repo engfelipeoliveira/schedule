@@ -41,10 +41,6 @@
 </h:head>
 <h:body>
    <div id="container" >
-         <div class="dualbrand">
-         <img src="../resources/gfx/dualbrand_logo.png" />
-      	 </div>
-   
    
       <div id="aside">
       <h:form id="formmenu" style="border:0px">
@@ -59,7 +55,7 @@
       		</p:submenu>
       		<p:submenu label="Minha Conta" >
       			<p:menuitem icon="ui-icon-carat-1-e" value="Alterar Senha" action="alterasenha.jsf" ajax="false" />
-      			<p:menuitem icon="ui-icon-carat-1-e" value="Relatório" action="utilizacao.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Relatório" action="relatorio.jsf" ajax="false" />
       		</p:submenu>
       		<p:separator />
       		<p:menuitem value="Sair" icon="ui-icon-close" actionListener="#{usuarioController.logout()}" ajax="true" oncomplete="javascript:window.location.assign('index.jsf')" />
