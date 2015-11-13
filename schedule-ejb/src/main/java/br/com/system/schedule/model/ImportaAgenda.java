@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -29,11 +29,11 @@ public class ImportaAgenda implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(targetEntity=Agenda.class, fetch=FetchType.EAGER)
-	private List<Agenda> agenda;
-	
 	@Column(length=100)
 	private String nomeArquivo;
+	
+	@OneToMany(mappedBy="importaAgenda", orphanRemoval=true, cascade=CascadeType.REMOVE)
+	private List<Agenda> agenda;
 	
 	@ManyToOne(targetEntity=Usuario.class)
 	private Usuario usuario;
@@ -72,14 +72,6 @@ public class ImportaAgenda implements Serializable {
 		this.nomeArquivo = nomeArquivo;
 	}
 
-	public List<Agenda> getAgenda() {
-		return agenda;
-	}
-
-	public void setAgenda(List<Agenda> agenda) {
-		this.agenda = agenda;
-	}
-
 	public int getQuantidade() {
 		return quantidade;
 	}
@@ -94,6 +86,14 @@ public class ImportaAgenda implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<Agenda> getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(List<Agenda> agenda) {
+		this.agenda = agenda;
 	}
 	
 }

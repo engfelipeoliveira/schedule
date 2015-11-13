@@ -3,7 +3,6 @@ package br.com.system.schedule.controller;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +26,7 @@ import org.primefaces.model.UploadedFile;
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.ImportaAgenda;
 import br.com.system.schedule.model.Usuario;
+import br.com.system.schedule.service.AgendaService;
 import br.com.system.schedule.service.ImportaAgendaService;
  
 @Model
@@ -38,8 +38,11 @@ public class ImportaAgendaController {
     @Inject
     private ImportaAgendaService importaAgendaService;
     
+    @Inject
+    private AgendaService agendaService;
+    
     private ImportaAgenda importaAgenda;
-	
+    
     private Usuario usuarioLogado;
     
     @Produces
@@ -139,12 +142,15 @@ public class ImportaAgendaController {
         		listaAgenda.add(agenda);
         	}
 
-        	listaAgenda.removeAll(Collections.singleton(null));
-        	
-        	importaAgenda.setAgenda(listaAgenda);
         	importaAgenda.setNomeArquivo(nomeArquivo);
-        	importaAgenda.setQuantidade(linhas);
+        	importaAgenda.setQuantidade(linhas - 1);
             importaAgendaService.importarAgenda(importaAgenda);
+            
+            for(Agenda agenda : listaAgenda){
+            	agenda.setImportaAgenda(importaAgenda);
+            	agendaService.inserirAgenda(agenda);
+            }
+            
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agenda importada com sucesso", "Sucesso"));
             initImportaAgenda();
         } catch (Exception e) {

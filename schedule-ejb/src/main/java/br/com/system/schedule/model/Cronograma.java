@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -26,8 +27,7 @@ public class Cronograma implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@NotNull
-	@ManyToOne(targetEntity=Usuario.class)
+	@ManyToOne(targetEntity=Usuario.class, fetch=FetchType.EAGER)
 	private Usuario usuario;
 	
 	@NotNull(message="Nome é obrigatório")

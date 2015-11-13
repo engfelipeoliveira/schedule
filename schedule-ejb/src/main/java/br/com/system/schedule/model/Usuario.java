@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -31,12 +30,6 @@ public class Usuario implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(targetEntity=Agenda.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Agenda> agenda;
-	
-	@OneToMany(targetEntity=Cronograma.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Cronograma> cronograma;
-	
 	@NotNull
 	private String nome;
 	
@@ -48,6 +41,12 @@ public class Usuario implements Serializable {
 	private String senha;
 	
 	private Long telefone;
+
+	@OneToMany(mappedBy="usuario", orphanRemoval=true, cascade=CascadeType.REMOVE)
+	private List<Cronograma> cronograma;
+
+	@OneToMany(mappedBy="usuario", orphanRemoval=true, cascade=CascadeType.REMOVE)
+	private List<Agenda> agenda;
 	
 	// A - Ativo / I - Inativo
 	@NotNull
@@ -112,20 +111,20 @@ public class Usuario implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public List<Agenda> getAgenda() {
-		return agenda;
-	}
-
-	public void setAgenda(List<Agenda> agenda) {
-		this.agenda = agenda;
-	}
-
 	public List<Cronograma> getCronograma() {
 		return cronograma;
 	}
 
 	public void setCronograma(List<Cronograma> cronograma) {
 		this.cronograma = cronograma;
+	}
+
+	public List<Agenda> getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(List<Agenda> agenda) {
+		this.agenda = agenda;
 	}
 
 }

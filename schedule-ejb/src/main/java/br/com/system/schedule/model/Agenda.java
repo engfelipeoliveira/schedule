@@ -27,10 +27,12 @@ public class Agenda implements Serializable {
 	@GeneratedValue
 	private Long id;	
 	
-	@NotNull
 	@ManyToOne(targetEntity=Usuario.class)
 	private Usuario usuario;
 	
+	@ManyToOne(targetEntity=ImportaAgenda.class)
+	private ImportaAgenda importaAgenda;
+
 	@NotNull(message="Nome é obigatório")
 	@Length(max=100, message="Nome muito grande")
 	@Column(length=100)
@@ -129,5 +131,13 @@ public class Agenda implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public ImportaAgenda getImportaAgenda() {
+		return importaAgenda;
+	}
+
+	public void setImportaAgenda(ImportaAgenda importaAgenda) {
+		this.importaAgenda = importaAgenda;
 	}	
 }

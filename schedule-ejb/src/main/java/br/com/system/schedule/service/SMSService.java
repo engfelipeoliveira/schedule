@@ -1,5 +1,6 @@
 package br.com.system.schedule.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,8 @@ import javax.ws.rs.core.Response;
 
 import sun.misc.BASE64Encoder;
 import br.com.system.schedule.model.Agenda;
+import br.com.system.schedule.model.Cronograma;
+import br.com.system.schedule.model.Usuario;
 
 @Stateless
 public class SMSService {
@@ -39,15 +42,26 @@ public class SMSService {
 	
 	private final static String DDI = "55";
 	
-	private final static String PREFIXO = "SMS_";
-	
-	//@Schedule(hour = "*", minute = "*/1")
+	@Schedule(hour = "*", minute = "*/1")
 	public void jobEnvioSMS() throws Exception{
 		logger.log(Level.INFO, "JOB Envia SMS");
-		List<Agenda> listaAgenda = listarAgenda();
 		
-		for(Agenda agenda : listarAgenda()){
-			enviarSMS(agenda);
+    	Date dataAtual = new Date();
+
+		List<Cronograma> listaCronograma = listarCronograma();
+		for(Cronograma cronograma : listaCronograma){
+			Long horaAntesEvento = cronograma.getHoraAntesEvento();
+			
+		    Timestamp dataDeHoje = new Timestamp(System.currentTimeMillis());
+		    dataDeHoje.setSeconds(0);
+		    dataDeHoje.setNanos(0);
+		    dataDeHoje.setHours(dataDeHoje.getHours() + Integer.parseInt(horaAntesEvento.toString()));
+		    Date dataEvento = new Date(dataDeHoje.getTime());
+			
+			List<Agenda> listaAgenda = listarAgenda(dataEvento, cronograma.getUsuario());
+			for(Agenda agenda : listaAgenda){
+				enviarSMS(agenda);
+			}
 		}
 		
 	}
@@ -65,7 +79,7 @@ public class SMSService {
 			String encoding = new BASE64Encoder().encode(userPassword.getBytes());
 			
 			Client client = ClientBuilder.newClient();
-			Entity<String> payload = Entity.json("{ \"sendSmsRequest\": {\"to\": \""+DDI+celular+"\", \"msg\": \""+mensagem+"\", \"callbackOption\": \"ALL\", \"id\": \""+PREFIXO+id+"\" }}");
+			Entity<String> payload = Entity.json("{ \"sendSmsRequest\": {\"to\": \""+DDI+celular+"\", \"msg\": \""+mensagem+"\", \"callbackOption\": \"ALL\", \"id\": \""+id+"\" }}");
 			Response response = client.target(URL_ZENVIA)
 			  .request(MediaType.APPLICATION_JSON_TYPE)
 			  .header("Authorization", "Basic " + encoding)
@@ -89,24 +103,24 @@ public class SMSService {
 	}
 	
 	
-    @SuppressWarnings("deprecation")
-	public List<Agenda> listarAgenda() throws Exception {
+	public List<Agenda> listarAgenda(Date dataEvento, Usuario usuario) throws Exception {
     	logger.info("Listando agenda");
         
     	String situacao = "A";
-    	Date dataAtual = new Date();
-    	dataAtual.setMonth(dataAtual.getMonth()-1);
     	
         List<Agenda> listaAgenda = new ArrayList<Agenda>();
         StringBuilder sql = new StringBuilder();
-        sql.append("  from Usuario u ");
-        sql.append("  inner join u.agenda a ");
+        sql.append("  from Agenda a ");
         sql.append(" where a.situacao = :situacao ");
+        sql.append("   and a.dataEvento = :dataEvento ");
+        sql.append("   and a.usuario = :usuario ");
                 
     	try {
             listaAgenda = (List<Agenda>)entityManager
         			.createQuery(sql.toString())
         			.setParameter("situacao", situacao)
+        			.setParameter("dataEvento", dataEvento)
+        			.setParameter("usuario", usuario)
         			.getResultList();
 			
 		} catch (NoResultException e) {
@@ -115,6 +129,31 @@ public class SMSService {
 		}
             	
     	return listaAgenda;
+    }
+
+    @SuppressWarnings("deprecation")
+	public List<Cronograma> listarCronograma() throws Exception {
+    	logger.info("Listando cronograma");
+        
+    	String situacao = "A";
+    	
+        List<Cronograma> listaCronograma = new ArrayList<Cronograma>();
+        StringBuilder sql = new StringBuilder();
+        sql.append("  from Cronograma c ");
+        sql.append(" where c.usuario.situacao = :situacao ");
+                
+    	try {
+            listaCronograma = (List<Cronograma>)entityManager
+        			.createQuery(sql.toString())
+        			.setParameter("situacao", situacao)
+        			.getResultList();
+			
+		} catch (NoResultException e) {
+			logger.log(Level.INFO, NOME_CLASS +".listarCronograma() - Nenhuma Cronograma cadastrada");
+			throw new Exception("Nenhuma Cronograma cadastrada");
+		}
+            	
+    	return listaCronograma;
     }
 
 }

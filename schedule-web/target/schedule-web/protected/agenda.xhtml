@@ -7,6 +7,7 @@
    template="/WEB-INF/templates/default.xhtml">
    
    <ui:define name="titulo">
+   <img src="../resources/gfx/agenda.png" />
    	Agenda
    </ui:define>
 
@@ -33,7 +34,7 @@
    </ui:define>
 
    <ui:define name="lista">
-   	<p:poll interval="10" update="grid" />
+   	<!-- p:poll interval="10" update="grid" / -->
    	<p:dataTable id="grid" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
    	paginator="true" rows="6" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
    	paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
@@ -72,12 +73,12 @@
 		</p:column>
 		<p:column  width="10%" exportable="false" >
 			<center>
-				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
+				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
 					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
 				</p:commandButton>
-				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao ne 'A' }" />
-				<p:commandButton ajax="false" id="editar" rendered="#{agendas.situacao eq 'A' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
-				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao ne 'A' }" />
+				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.tipoCadastro ne 'M' }" />
+				<p:commandButton ajax="false" id="editar" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
+				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.tipoCadastro ne 'M' }" />
 			</center>
 	     </p:column>
 	</p:dataTable>

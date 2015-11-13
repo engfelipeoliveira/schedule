@@ -34,6 +34,12 @@ import br.com.system.schedule.model.Usuario;
 @Stateless
 public class AgendaService {
 
+	
+	public static void main(String[] args) {
+		Date a = new Date();
+		System.out.println(a);
+	}
+	
     @Inject
     private Logger logger;
 

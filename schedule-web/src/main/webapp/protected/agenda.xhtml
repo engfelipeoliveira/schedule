@@ -73,12 +73,13 @@
 		</p:column>
 		<p:column  width="10%" exportable="false" >
 			<center>
-				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
+				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.tipoCadastro eq 'M' and agendas.situacao ne 'E' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
 					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
 				</p:commandButton>
-				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.tipoCadastro ne 'M' }" />
-				<p:commandButton ajax="false" id="editar" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
-				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.tipoCadastro ne 'M' }" />
+				<p:commandButton ajax="false" id="editar" rendered="#{agendas.tipoCadastro eq 'M' and agendas.situacao ne 'E' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
+				
+				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao eq 'E' or agendas.tipoCadastro ne 'M' }" />
+				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao eq 'E' or agendas.tipoCadastro ne 'M' }" />
 			</center>
 	     </p:column>
 	</p:dataTable>

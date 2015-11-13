@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/WEB-INF/templates/default.xhtml">
+
+   <ui:define name="titulo">
+   <img src="../resources/gfx/senha.png" width="" />
+   	Alterar Senha
+   </ui:define>
+
+   <ui:define name="formulario">
+	<p:focus for="novaSenha" id="focus" />
+	<h:inputHidden id="id" value="#{usuarioController.usuarioLogado.id}" />
+	<h:panelGrid columns="2" columnClasses="titleCell" id="painel">
+		<h:outputLabel for="nome" value="Nome:"/>
+		<p:inputText size="30" disabled="true" id="nome" value="#{usuarioController.usuarioLogado.nome}" />
+		<h:outputLabel for="email" value="Email:"/>
+		<p:inputText size="30" disabled="true" id="email" value="#{usuarioController.usuarioLogado.email}" />
+		<h:outputLabel for="novaSenha" value="Nova*:"/>
+		<p:password placeholder="Informar a nova senha" size="30" maxlength="10" id="novaSenha" required="true" requiredMessage="Nova Senha é obrigatória" value="#{usuarioController.novaSenha}" />
+		<h:outputLabel for="repitaNovaSenha" value="Repita*:"/>
+		<p:password placeholder="Repetir a nova senha" size="30" maxlength="10" id="repitaNovaSenha" required="true" requiredMessage="Repita Nova Senha é obrigatória" value="#{usuarioController.repitaNovaSenha}" />
+	</h:panelGrid>
+	<br />
+	<p:commandLink type="button" onclick="PF('diretrizSenha').show();" value="- Diretrizes de senha" />
+	<br /><br />
+	<h:panelGrid columns="3" >
+		<p:commandButton ajax="false" id="salvar" update="growl painel" actionListener="#{usuarioController.alterarSenha()}" value="Salvar" icon="ui-icon-disk" />
+		<p:commandButton value="Cancelar" id="cancelar" update="painel focus" process="@this" icon="ui-icon-cancel" >
+			<p:resetInput target="painel" />
+		</p:commandButton>
+		<h:outputText value="(*) Dados Obrigatórios" />
+	</h:panelGrid>
+    <p:dialog  header="Diretrizes de Senha" widgetVar="diretrizSenha" modal="true"  height="130" width="450">
+		<h:outputText value="- Deve conter pelo menos um número." /> <br />
+		<h:outputText value="- Deve conter pelo menos uma letra maiúscula." /> <br />
+		<h:outputText value="- Deve conter pelo menos um minúscula." /> <br />
+		<h:outputText value="- Deve conter pelo menos um caracter especial @#$%." /> <br />
+		<h:outputText value="- Deve conter no mínimo 6 e no máximo 10 caracteres." /> <br />
+	</p:dialog>
+   </ui:define>
+   
+   <ui:define name="lista">
+   </ui:define>
+</ui:composition>
