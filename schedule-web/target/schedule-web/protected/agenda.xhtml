@@ -3,7 +3,7 @@
    xmlns:ui="http://java.sun.com/jsf/facelets"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:p="http://primefaces.org/ui"
+   xmlns:p="http://primefaces.org/ui" 
    template="/WEB-INF/templates/default.xhtml">
    
    <ui:define name="titulo">
@@ -15,8 +15,11 @@
    	<p:focus for="nome" id="focus" />
    	<h:inputHidden id="id" value="#{agenda.id}" />
    	<h:panelGrid columns="2" clumnClasses="titleCell" id="painel">
+   	
    		<h:outputLabel for="nome" value="Nome*:"/>
-		<p:inputText placeholder="Informe o nome completo" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" />
+   		<p:autoComplete placeholder="Informe o nome completo" maxResults="20" minQueryLength="3" effect="blind" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" completeMethod="#{agendaController.autoCompleteNome}" >
+   			<p:ajax event="itemSelect" listener="#{agendaController.onItemSelect}" oncomplete="PrimeFaces.focus('formulario:dataEvento')" update="nome celular" />
+   		</p:autoComplete>
 		<h:outputLabel for="celular" value="Celular*:"/>
 		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.celular}" required="true" requiredMessage="Celular é obrigatório"/>
 		<h:outputLabel for="dataEvento" value="Data/Hora*:"/>
@@ -34,7 +37,7 @@
    </ui:define>
 
    <ui:define name="lista">
-   	<!-- p:poll interval="10" update="grid" / -->
+   	<p:poll interval="10" update="grid" />
    	<p:dataTable id="grid" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.listarAgenda()}"
    	paginator="true" rows="6" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
    	paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
@@ -73,12 +76,13 @@
 		</p:column>
 		<p:column  width="10%" exportable="false" >
 			<center>
-				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
+				<p:commandButton ajax="true" id="excluir" rendered="#{agendas.tipoCadastro eq 'M' and agendas.situacao ne 'E' }" actionListener="#{agendaController.excluirAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
 					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
 				</p:commandButton>
-				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.tipoCadastro ne 'M' }" />
-				<p:commandButton ajax="false" id="editar" rendered="#{agendas.tipoCadastro eq 'M' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
-				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.tipoCadastro ne 'M' }" />
+				<p:commandButton ajax="false" id="editar" rendered="#{agendas.tipoCadastro eq 'M' and agendas.situacao ne 'E' }" actionListener="#{agendaController.selecionarAgenda(agendas)}" title="Editar" icon="ui-icon-pencil" update=":formulario:growl grid" />
+				
+				<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="true" rendered="#{agendas.situacao eq 'E' or agendas.tipoCadastro ne 'M' }" />
+				<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="true"  rendered="#{agendas.situacao eq 'E' or agendas.tipoCadastro ne 'M' }" />
 			</center>
 	     </p:column>
 	</p:dataTable>

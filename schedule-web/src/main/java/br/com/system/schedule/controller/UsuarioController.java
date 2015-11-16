@@ -111,7 +111,7 @@ public class UsuarioController {
             String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
             facesContext.addMessage(null, m);
-            return "index.jsf?faces-redirect=true";
+            return "index.jsf";
         }
     }
 

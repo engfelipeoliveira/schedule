@@ -17,9 +17,12 @@
 package br.com.system.schedule.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -29,6 +32,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
+
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.AgendaService;
@@ -36,7 +41,7 @@ import br.com.system.schedule.service.AgendaService;
 @Model
 public class AgendaController {
 
-    @Inject
+	@Inject
     private FacesContext facesContext;
 
     @Inject
@@ -63,7 +68,34 @@ public class AgendaController {
     	agenda.setTipoCadastro("M");
     	agenda.setSituacao("A");
     }
+
+    public List<String> autoCompleteNome(String nome) throws Exception {
+        List<Agenda> listaAgenda = agendaService.consultarRemetente(nome, usuarioLogado);
+        Set<String> results = new HashSet<String>();
+        List<String> retorno = new ArrayList<String>();
+        for(Agenda agenda : listaAgenda){
+        	String telefone = agenda.getCelular().toString();
+        	results.add(agenda.getNome() +" - "+ "(" + telefone.substring(0, 2) + ")" + telefone.substring(2, 3) + "." + telefone.substring(3, 7) + "-"  + telefone.substring(7, 11));
+        }
+        retorno.addAll(results);
+        return retorno;
+    }
     
+    public void onItemSelect(SelectEvent event) {
+    	String itemSelecionado = event.getObject().toString();
+    	String itens[] = itemSelecionado.split(" - ");
+    	String nome = itens[0];
+    	String celular = itens[1];
+    	celular = celular.replace("(", "");
+    	celular = celular.replace(")", "");
+    	celular = celular.replace("-", "");
+    	celular = celular.replace(".", "");
+    	Long celularLong = Long.parseLong(celular);
+    	
+    	agenda.setNome(nome);
+    	agenda.setCelular(celularLong);
+    }
+
     public String formataData(Date data, String formato){
     	SimpleDateFormat sdf = new SimpleDateFormat(formato);
     	String dataFormat = sdf.format(data);
@@ -72,6 +104,12 @@ public class AgendaController {
     
     public void inserirAgenda() throws Exception {
         try {
+        	Date dataAtual = new Date();
+        	dataAtual.setHours(dataAtual.getHours()+2);
+        	
+        	if(agenda.getDataEvento().compareTo(dataAtual) < 0 ){
+        		throw new Exception("A data/hora do evento deve ser 2 horas superior a data/hora atual");
+        	}
             agendaService.inserirAgenda(agenda);
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agenda salva com sucesso", "Sucesso"));
             initAgenda();

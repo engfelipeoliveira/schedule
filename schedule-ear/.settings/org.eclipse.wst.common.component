@@ -68,5 +68,11 @@
         <dependent-module archiveName="jackson-xc.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/codehaus/jackson/jackson-xc/1.9.13/jackson-xc-1.9.13.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="mail.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/mail/mail/1.4.7/mail-1.4.7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="activation.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

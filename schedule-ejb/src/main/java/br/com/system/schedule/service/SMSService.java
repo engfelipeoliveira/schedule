@@ -1,6 +1,7 @@
 package br.com.system.schedule.service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,20 +61,39 @@ public class SMSService {
 			
 			List<Agenda> listaAgenda = listarAgenda(dataEvento, cronograma.getUsuario());
 			for(Agenda agenda : listaAgenda){
-				enviarSMS(agenda);
+				enviarSMS(agenda, cronograma);
 			}
 		}
 		
 	}
 	
-	public void enviarSMS(Agenda agenda) throws Exception{
+	public void enviarSMS(Agenda agenda, Cronograma cronograma) throws Exception{
 		logger.log(Level.INFO, "Enviando SMS");
 		logger.log(Level.INFO, "Celular " + agenda.getCelular());
 		
 		try {
 			String celular = agenda.getCelular().toString();
 			String id = agenda.getId().toString();
-			String mensagem = "mensagem de teste";
+			String mensagem = cronograma.getTexto();
+			
+			String destinatario = agenda.getNome();
+			
+			SimpleDateFormat fmtHora = new SimpleDateFormat("HH:mm");
+			String hora = fmtHora.format(agenda.getDataEvento());
+			
+			SimpleDateFormat fmtData = new SimpleDateFormat("dd/MM/yyyy");
+			String data = fmtData.format(agenda.getDataEvento());
+			
+			String remetente = agenda.getUsuario().getNome();
+			
+			mensagem = mensagem.replaceAll("#REMETENTE", remetente);
+			mensagem = mensagem.replaceAll("#DESTINATARIO", destinatario);
+			mensagem = mensagem.replaceAll("#DATA", data);
+			mensagem = mensagem.replaceAll("#HORA", hora);
+			
+			System.out.println(mensagem);
+			
+			
 			
 			String userPassword = USER_ZENVIA + ":" + PASS_ZENVIA;
 			String encoding = new BASE64Encoder().encode(userPassword.getBytes());

@@ -131,6 +131,13 @@ public class ImportaAgendaController {
         		SimpleDateFormat frm = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
         		Date dataEvento = frm.parse(dataEventoStr);
         		
+            	Date dataAtual = new Date();
+            	dataAtual.setHours(dataAtual.getHours()+2);
+            	
+            	if(dataEvento.compareTo(dataAtual) < 0 ){
+            		throw new Exception("A data/hora do evento deve ser 2 horas superior a data/hora atual na linha "+lin+".");
+            	}
+        		
         		Agenda agenda = new Agenda();
         		agenda.setDataEvento(dataEvento);
         		agenda.setSituacao("A");

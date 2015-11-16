@@ -4,7 +4,7 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:p="http://primefaces.org/ui"
-   template="/WEB-INF/templates/default.xhtml">
+   template="/WEB-INF/templates/semgrid.xhtml">
 
    <ui:define name="titulo">
    <img src="../resources/gfx/senha.png" width="" />
@@ -37,12 +37,9 @@
     <p:dialog  header="Diretrizes de Senha" widgetVar="diretrizSenha" modal="true"  height="130" width="450">
 		<h:outputText value="- Deve conter pelo menos um número." /> <br />
 		<h:outputText value="- Deve conter pelo menos uma letra maiúscula." /> <br />
-		<h:outputText value="- Deve conter pelo menos um minúscula." /> <br />
+		<h:outputText value="- Deve conter pelo menos uma letra minúscula." /> <br />
 		<h:outputText value="- Deve conter pelo menos um caracter especial @#$%." /> <br />
 		<h:outputText value="- Deve conter no mínimo 6 e no máximo 10 caracteres." /> <br />
 	</p:dialog>
-   </ui:define>
-   
-   <ui:define name="lista">
    </ui:define>
 </ui:composition>

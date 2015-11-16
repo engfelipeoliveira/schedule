@@ -74,6 +74,32 @@ public class AgendaService {
         }
     }
     
+    public List<Agenda> consultarRemetente(String nome, Usuario usuario) throws Exception {
+    	logger.info("Consultando Remetente por nome:" + nome);
+    	List<Agenda> agenda = null;
+    	
+        if("".equals(nome) || nome == null){
+        	logger.log(Level.INFO, NOME_CLASS +".consultarRemetente() - Nome e obrigatorio");
+        	throw new Exception("Nome e obrigatorio");
+        }else{
+        	String sql = " from Agenda a where upper(a.nome) like upper(:nome) and a.usuario = :usuario order by a.nome";
+        	try {
+                agenda = (List<Agenda>)entityManager
+            			.createQuery(sql.toString())
+            			.setParameter("nome", "%"+nome+"%")
+            			.setParameter("usuario", usuario)
+            			.getResultList();
+                
+                entityManager.flush();
+    			
+    		} catch (NoResultException e) {
+    			logger.log(Level.INFO, NOME_CLASS +".consultarRemetente() - Nenhum remetente cadastrado com o nome informado");
+    			throw new Exception("Nenhuma remetente cadastrado com o nome informado");
+    		}
+        }
+        return agenda;
+    }
+
     
     public void inserirAgenda(Agenda agenda) throws Exception {
     	logger.info("Inserindo Agenda");

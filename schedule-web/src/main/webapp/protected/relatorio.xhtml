@@ -12,62 +12,8 @@
    </ui:define>
 
    <ui:define name="formulario">
-   	<h:panelGrid columns="1" columnClasses="titleCell" id="painel">
-   		<p:fileUpload fileUploadListener="#{importaAgendaController.inserirImportaAgenda}" fileLimit="1" 
-   		fileLimitMessage="Selecione somente um arquivo" allowTypes="/(\.|\/)(xls|XLS)$/" 
-   		invalidFileMessage="Extensão de arquivo inválido. Usar xls. " showButtons="true" label="Procurar" 
-   		uploadLabel="Enviar" cancelLabel="Cancelar" auto="false" update="@all"/>
-		<p:commandLink value="- Arquivo xls de exemplo" actionListener="#{importaAgendaController.download}" ajax="false" >
-		<p:fileDownload value="#{importaAgendaController.file}" />
-    	</p:commandLink>
-    	<p:commandLink type="button" onclick="PF('layoutImportacao').show();" value="- Layout de importação" />
-	</h:panelGrid>
    </ui:define>
 
    <ui:define name="lista">
-   	<p:dataTable id="grid" var="agendas" emptyMessage="Nenhum registro" value="#{importaAgendaController.listarImportaAgenda()}"
-   	paginator="true" rows="6" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
-   	paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" >
-   		<f:facet name="{Exporters}">
-	   		<h:commandLink>
-	   			Excel
-	   			<p:dataExporter type="xls" target="grid" fileName="agendasImportadas" />
-			</h:commandLink>
-			|
-			<h:commandLink>
-				PDF
-				<p:dataExporter type="pdf" target="grid" fileName="agendasImportadas" />
-			</h:commandLink>
-		</f:facet>
-		<p:column headerText="Nome" width="64%" >
-			<h:outputText value="#{agendas.nomeArquivo}" />
-		</p:column>
-		<p:column headerText="Quantidade" width="15%" >
-   			<h:outputText value="#{agendas.quantidade}" />
-		</p:column>
-		<p:column headerText="Data" width="15%" >
-   			<h:outputText value="#{importaAgendaController.formataData(agendas.dataInclusao, 'dd/MM/yyyy HH:mm')}" />
-		</p:column>
-		<p:column  width="6%" exportable="false" >
-			<center>
-				<p:commandButton ajax="true" id="excluir" actionListener="#{importaAgendaController.excluirImportaAgenda(agendas)}" title="Excluir" icon="ui-icon-trash" update=":formulario:growl grid :formulario:painel">
-					<p:confirm header="Excluir" message="Confirma a exclusão?" icon="ui-icon-alert" />
-         		</p:commandButton>
-			</center>
-		</p:column>
-   	</p:dataTable>
-
-	<p:dialog  header="Layout de Importação" widgetVar="layoutImportacao" modal="true"  height="130" width="450">
-		<h:outputText value="- O arquivo deve estar no formato Excel (*.xls)." /> <br />
-		<h:outputText value="- O arquivo deve conter no mínimo um e no máximo mil registros de agendas." /> <br />
-		<h:outputText value="- O arquivo deve conter quatro colunas." /> <br />
-		<h:outputText value="- A primeira linha do arquivo deve conter o cabeçalho." /> <br />
-		<h:outputText value="- As colunas devem estar na ordem: nome, data, hora e celular." /> <br />
-		<h:outputText value="- A coluna 'nome' deve conter no máximo cem caracteres." /> <br />
-		<h:outputText value="- A coluna 'data' deve estar no formato dd/mm/aaaa." /> <br />
-		<h:outputText value="- A coluna 'hora' deve estar no formato hh:mm." /> <br />
-		<h:outputText value="- A coluna 'celular' deve conter exatamente onze dígitos (ddd + celular)." /> <br />
-		<h:outputText value="- Utilize o arquivo xls de exemplo disponível para download." /> <br />
-	</p:dialog>
    </ui:define>      
 </ui:composition>

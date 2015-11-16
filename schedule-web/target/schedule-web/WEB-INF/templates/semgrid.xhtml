@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+   <title>SOS Agenda</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <h:outputStylesheet name="css/screen.css" />
+
+    <script>  
+                PrimeFaces.locales['pt'] = {  
+                    closeText: 'Fechar',  
+                    prevText: 'Anterior',  
+                    nextText: 'Próximo',  
+                    currentText: 'Começo',  
+                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],  
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],  
+                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],  
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],  
+                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],  
+                    weekHeader: 'Semana',  
+                    firstDay: 0,  
+                    isRTL: false,  
+                    showMonthAfterYear: false,  
+                    yearSuffix: '',  
+                    timeOnlyTitle: 'Só Horas',  
+                    timeText: 'Tempo',  
+                    hourText: 'Hora',  
+                    minuteText: 'Minuto',  
+                    secondText: 'Segundo',  
+                    ampm: false,  
+                    month: 'Mês',  
+                    week: 'Semana',  
+                    day: 'Dia',  
+                    allDayText: 'Todo o Dia'  
+                };  
+            </script>  
+
+</h:head>
+<h:body>
+   <div id="container" >
+   
+      <div id="aside">
+      <h:form id="formmenu" style="border:0px">
+      	<p:menu style="width:88%">
+      		<p:submenu label="Cadastro">
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Agenda" action="agenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Cronograma" action="cronograma.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Integração" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Arquivo" action="importaagenda.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="WebService" action="integraagenda.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:submenu label="Minha Conta" >
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Alterar Senha" action="alterasenha.jsf" ajax="false" />
+      			<p:menuitem icon="ui-icon-carat-1-e" value="Relatório" action="relatorio.jsf" ajax="false" />
+      		</p:submenu>
+      		<p:separator />
+      		<p:menuitem value="Sair" icon="ui-icon-close" actionListener="#{usuarioController.logout()}" ajax="true" oncomplete="javascript:window.location.assign('index.jsf')" />
+      	</p:menu>
+	         
+	         </h:form>
+      </div>
+
+      <div id="content">
+         <h1>
+	         <ui:insert name="titulo">
+	         	[Template titulo das paginas]
+	         </ui:insert>
+		 </h1>
+         
+         <h:form id="formulario" style="height: 200px">
+         	<p:growl id="growl" life="3000" />
+         	<ui:insert name="formulario">
+         		[Template formulario]
+         	</ui:insert>
+         </h:form>
+         
+         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		 </p:confirmDialog>
+         
+      </div>
+      <div id="footer">
+      </div>
+   </div>
+            
+</h:body>
+</html>
