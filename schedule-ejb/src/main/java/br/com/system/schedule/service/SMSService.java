@@ -126,19 +126,18 @@ public class SMSService {
 	public List<Agenda> listarAgenda(Date dataEvento, Usuario usuario) throws Exception {
     	logger.info("Listando agenda");
         
-    	String situacao = "A";
-    	
         List<Agenda> listaAgenda = new ArrayList<Agenda>();
         StringBuilder sql = new StringBuilder();
         sql.append("  from Agenda a ");
-        sql.append(" where a.situacao = :situacao ");
+        sql.append(" where a.usuario = :usuario ");
         sql.append("   and a.dataEvento = :dataEvento ");
-        sql.append("   and a.usuario = :usuario ");
+        sql.append("   and (a.situacao = 'A' ");
+        sql.append("    or (a.situacao = 'E' ");
+        sql.append("   and a.retornoSms is null)) ");
                 
     	try {
             listaAgenda = (List<Agenda>)entityManager
         			.createQuery(sql.toString())
-        			.setParameter("situacao", situacao)
         			.setParameter("dataEvento", dataEvento)
         			.setParameter("usuario", usuario)
         			.getResultList();
