@@ -64,6 +64,7 @@ public class AgendaService {
             			.getSingleResult();
                 
                 agenda.setRetornoSms(retornoSms);
+                agenda.setSituacao("R");
                 entityManager.merge(agenda);
                 entityManager.flush();
     			

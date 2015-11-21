@@ -55,7 +55,7 @@ public class Agenda implements Serializable {
 	// M - Manual / A - Arquivo / W - Webservice
 	private String tipoCadastro;
 	
-	// A - Agendado / E - Enviado / F - Falha
+	// A - Agendado / E - Enviado / F - Falha / R - Respondido
 	@Column(length=1)
 	private String situacao;
 	

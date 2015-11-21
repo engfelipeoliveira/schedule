@@ -1,6 +1,7 @@
 package br.com.system.schedule.controller;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,6 +86,7 @@ public class ImportaAgendaController {
         	List<Agenda> listaAgenda = new ArrayList<Agenda>();
         	
         	for(int i = 1; i < linhas; i++){
+        		
         		String nome = sheet.getCell(0, i).getContents();
         		DateCell data = null;
         		DateCell hora = null;
@@ -121,14 +123,19 @@ public class ImportaAgendaController {
 					throw new Exception("Celular deve conter somente dígitos na linha "+lin+".");
 				}
         		
-        		SimpleDateFormat dataSdf = new SimpleDateFormat("dd/MMM/yyyy");
-        		String dataStr = dataSdf.format(data.getDate());
+        		SimpleDateFormat dataSdf = new SimpleDateFormat("dd/MM/yyyy");
+        		Date dataDt = data.getDate();
+        		dataDt.setHours(24); 
+        		String dataStr = dataSdf.format(dataDt);
         		
         		SimpleDateFormat horaSdf = new SimpleDateFormat("HH:mm");
-        		String horaStr = horaSdf.format(hora.getDate());
+        		Date horaDt = hora.getDate();
+        		horaDt.setHours(horaDt.getHours()+3);
+        		//horaDt.setMinutes(horaDt.getMinutes()+6);
+        		String horaStr = horaSdf.format(horaDt);
         		
         		String dataEventoStr = dataStr +" "+ horaStr;
-        		SimpleDateFormat frm = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
+        		SimpleDateFormat frm = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         		Date dataEvento = frm.parse(dataEventoStr);
         		
             	Date dataAtual = new Date();
