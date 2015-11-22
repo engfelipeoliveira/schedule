@@ -23,7 +23,7 @@
 		<h:outputLabel for="celular" value="Celular*:"/>
 		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.celular}" required="true" requiredMessage="Celular é obrigatório"/>
 		<h:outputLabel for="dataEvento" value="Data/Hora*:"/>
-		<p:calendar id="dataEvento" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agenda.dataEvento}" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="true" />
+		<p:calendar id="dataEvento" pages="3" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agenda.dataEvento}" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="false" mindate="#{agendaController.exibeDataEventoAtual()}" timeControlType="select" />
 		<h:outputLabel for="dataInclusao" value="Cadastro:"/>
 		<p:calendar id="dataInclusao" pattern="dd/MM/yyyy HH:mm" disabled="true" readonly="true" readonlyInput="true" required="false" value="#{agenda.dataInclusao}" />
 	</h:panelGrid>

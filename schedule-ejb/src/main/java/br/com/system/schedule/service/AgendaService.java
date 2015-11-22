@@ -162,6 +162,42 @@ public class AgendaService {
     	return listaAgenda;
     }
 
-    
+
+	public List<Agenda> relatorioAgenda(Usuario usuario, Date dataInicio, Date dataFim, String nome, Long celular, String tipo, String situacao) throws Exception {
+    	logger.info("Relatorio de agendamento");
+    	
+        List<Agenda> listaAgenda = new ArrayList<Agenda>();
+        StringBuilder sql = new StringBuilder(" from Agenda a ");
+        						   sql.append(" where a.usuario = :usuario ");
+        						   sql.append("   and a.dataEvento between :dataInicio and :dataFim ");
+        						if(nome != null && !"".equals(nome)){
+        						   nome = nome.toUpperCase();
+        						   sql.append("   and upper(a.nome) like '%"+nome+"%' ");
+        						}
+        						if(celular != null){
+        						   sql.append("   and a.celular = " +celular );        							
+        						}
+        						if(tipo != null && !"".equals(tipo)){
+          						   sql.append("   and a.tipoCadastro = '"+tipo+"' ");
+          						}
+        						if(situacao != null && !"".equals(situacao)){
+          						   sql.append("   and a.situacao = '"+situacao+"' ");
+          						}
+        						   sql.append(" order by a.dataEvento desc ");
+    	try {
+            listaAgenda = (List<Agenda>)entityManager
+        			.createQuery(sql.toString())
+        			.setParameter("usuario", usuario)
+        			.setParameter("dataInicio", dataInicio)
+        			.setParameter("dataFim", dataFim)
+        			.getResultList();
+            entityManager.flush();
+		} catch (NoResultException e) {
+			logger.log(Level.INFO, NOME_CLASS +".listarAgenda() - Nenhuma agenda cadastrada");
+			throw new Exception("Nenhuma agenda cadastrada");
+		}
+            	
+    	return listaAgenda;
+    }
     
 }

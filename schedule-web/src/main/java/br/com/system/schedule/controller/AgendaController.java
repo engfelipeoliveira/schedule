@@ -18,6 +18,7 @@ package br.com.system.schedule.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -49,8 +50,20 @@ public class AgendaController {
     
     private Agenda agenda;
     
+    private String nome;
+    
+    private Long celular;
+    
+    private Date dataInicio;
+    
+    private String situacao;
+    
+    private String tipo;
+    
+    private Date dataFim;
+    
     private Usuario usuarioLogado;
-
+    
     private Locale localeCalendar = new Locale("pt", "BR");
     
     @Produces
@@ -59,16 +72,53 @@ public class AgendaController {
         return agenda;
     }
     
+    private Date getPrimeiroDiaDoMes(){
+    	Calendar dataAtual = Calendar.getInstance();  
+    	Calendar primeiroDia = Calendar.getInstance();  
+    	Calendar ultimoDia = Calendar.getInstance();  
+    	//1º dia do mês atual  
+    	primeiroDia.add(Calendar.DAY_OF_MONTH, -dataAtual.get(Calendar.DAY_OF_MONTH));  
+    	primeiroDia.add(Calendar.DAY_OF_YEAR, 1);
+    	Date retorno = primeiroDia.getTime();
+    	retorno.setHours(0);
+    	retorno.setMinutes(0);
+    	return retorno;
+    }
+    
+    private Date getUltimoDiaDoMes(){
+    	Calendar dataAtual = Calendar.getInstance();  
+    	Calendar primeiroDia = Calendar.getInstance();  
+    	Calendar ultimoDia = Calendar.getInstance();  
+    	  
+    	//Ultimo dia do mês atual  
+    	ultimoDia.add(Calendar.MONTH, 1);  
+    	ultimoDia.add(Calendar.DAY_OF_MONTH, -dataAtual.get(Calendar.DAY_OF_MONTH));  
+    	
+    	Date retorno = ultimoDia.getTime();
+    	retorno.setHours(23);
+    	retorno.setMinutes(59);
+    	return retorno;
+    }
+    
+    
     @PostConstruct
     public void initAgenda() {
+    	dataInicio = getPrimeiroDiaDoMes();
     	agenda = new Agenda();
     	usuarioLogado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+    	agenda.setDataEvento(exibeDataEventoAtual());
     	agenda.setUsuario(usuarioLogado);
     	agenda.setDataInclusao(new Date());
     	agenda.setTipoCadastro("M");
     	agenda.setSituacao("A");
     }
 
+    public Date exibeDataEventoAtual(){
+    	Date dataEvento = new Date();
+    	dataEvento.setHours(dataEvento.getHours() + 2);
+    	return dataEvento;
+    }
+    
     public List<String> autoCompleteNome(String nome) throws Exception {
         List<Agenda> listaAgenda = agendaService.consultarRemetente(nome, usuarioLogado);
         Set<String> results = new HashSet<String>();
@@ -155,6 +205,20 @@ public class AgendaController {
     	return listaAgenda;
     }
 
+    public List<Agenda> relatorioAgenda() throws Exception{
+    	List<Agenda> listaAgenda = null;
+    	try {
+    		listaAgenda = agendaService.relatorioAgenda(usuarioLogado, dataInicio, dataFim, nome, celular, tipo, situacao);	
+		} catch (Exception e) {
+			String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
+            facesContext.addMessage(null, m);
+		}
+    	
+    	return listaAgenda;
+    }
+
+    
     private String getRootErrorMessage(Exception e) {
         // Default to general error message that registration failed.
         String errorMessage = "Registration failed. See server log for more information";
@@ -180,6 +244,54 @@ public class AgendaController {
 
 	public void setLocaleCalendar(Locale localeCalendar) {
 		this.localeCalendar = localeCalendar;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public Date getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getCelular() {
+		return celular;
+	}
+
+	public void setCelular(Long celular) {
+		this.celular = celular;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }

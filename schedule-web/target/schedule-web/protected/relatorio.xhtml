@@ -12,8 +12,83 @@
    </ui:define>
 
    <ui:define name="formulario">
+   	<p:focus for="nome" id="focus" />
+   	<h:panelGrid columns="2" clumnClasses="titleCell" id="painel">
+   	
+   		<h:outputLabel for="nome" value="Nome:"/>
+   		<p:autoComplete placeholder="Informe parte do nome" size="30" id="nome" value="#{agendaController.nome}" maxlength="100" />
+		<h:outputLabel for="celular" value="Celular:"/>
+		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agendaController.celular}" />
+		<h:outputLabel for="dataInicio" value="Data/Hora(Início):"/>
+		<p:calendar id="dataInicio" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataInicio}" locale="pt" timeZone="America/Sao_Paulo" navigator="true" required="true" requiredMessage="Data/Hora(Início) é obrigatório">
+			<p:ajax event="dateSelect" update="dataFim" />
+		</p:calendar>
+		<h:outputLabel for="dataFim" value="Data/Hora(Fim):"/>
+		<p:calendar id="dataFim" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataFim}" locale="pt" timeZone="America/Sao_Paulo" navigator="true" mindate="#{agendaController.dataInicio}" required="true" requiredMessage="Data/Hora(Fim) é obrigatório" />
+		<h:outputLabel for="tipo" value="Tipo:"/>
+		<p:selectOneMenu id="tipo" value="#{agendaController.tipo}" style="width:212px">
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItem itemLabel="Manual" itemValue="M" />
+            <f:selectItem itemLabel="Arquivo" itemValue="A" />
+            <f:selectItem itemLabel="WebService" itemValue="W" />
+        </p:selectOneMenu>
+		<h:outputLabel for="situacao" value="Situação:"/>
+		<p:selectOneMenu id="situacao" value="#{agendaController.situacao}" style="width:212px">
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItem itemLabel="Agendado" itemValue="A" />
+            <f:selectItem itemLabel="Enviado" itemValue="E" />
+            <f:selectItem itemLabel="Respondido" itemValue="R" />
+        </p:selectOneMenu>
+	</h:panelGrid>
+	<h:panelGrid columns="3">
+		<p:commandButton ajax="false" id="pesquisar" update="growl :lista" value="Pesquisar" icon="ui-icon-search" />
+		<p:commandButton value="Cancelar" id="cancelar" update="painel focus" process="@this" icon="ui-icon-cancel" >
+			<p:resetInput target="painel" />
+		</p:commandButton>
+	</h:panelGrid>
+   </ui:define>
+   
+   <ui:define name="lista">
+      	<p:dataTable id="grid" var="agendas" emptyMessage="Nenhum registro" value="#{agendaController.relatorioAgenda()}"
+   	paginator="true" rows="10" paginatorPosition="top" draggableColumns="true" resizableColumns="true"
+   	paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+   	currentPageReportTemplate="{totalRecords} registros" >
+	   	<f:facet name="{Exporters}">
+	   		<h:commandLink>
+	   			Excel
+				<p:dataExporter type="xls" target="grid" fileName="agendas" />
+			</h:commandLink>
+			|
+			<h:commandLink>
+				PDF
+				<p:dataExporter type="pdf" target="grid" fileName="agendas" />
+			</h:commandLink>
+		</f:facet>
+		<p:column headerText="Nome" width="34%" >
+			<h:outputText value="#{agendas.nome}" />
+		</p:column>
+		<p:column headerText="Celular" width="12%" >
+			<h:outputText value="(#{agendas.celular.toString().substring(0,2)})#{agendas.celular.toString().substring(2,3)}.#{agendas.celular.toString().substring(3,7)}-#{agendas.celular.toString().substring(7,11)}" />
+		</p:column>
+		<p:column headerText="Retorno" width="13%" >
+			<h:outputText value="#{agendas.retornoSms}" />
+		</p:column>
+		<p:column headerText="Data/Hora" width="13%">
+			<h:outputText value="#{agendaController.formataData(agendas.dataEvento, 'dd/MM/yyyy HH:mm')}" /> 
+		</p:column>
+		<p:column headerText="Tipo" width="9%" >
+			<h:outputText value="Manual" rendered="#{agendas.tipoCadastro eq 'M'}" />
+			<h:outputText value="Arquivo" rendered="#{agendas.tipoCadastro eq 'A'}" />
+			<h:outputText value="WebService" rendered="#{agendas.tipoCadastro eq 'W'}" />
+		</p:column>
+		<p:column headerText="Situação" width="9%" >
+	 		<h:outputText value="Agendado" rendered="#{agendas.situacao eq 'A'}" />
+			<h:outputText value="Enviado" rendered="#{agendas.situacao eq 'E'}" />
+			<h:outputText value="Falha" rendered="#{agendas.situacao eq 'F'}" />
+			<h:outputText value="Respondido" rendered="#{agendas.situacao eq 'R'}" />
+		</p:column>
+	</p:dataTable>
+   
    </ui:define>
 
-   <ui:define name="lista">
-   </ui:define>      
 </ui:composition>
