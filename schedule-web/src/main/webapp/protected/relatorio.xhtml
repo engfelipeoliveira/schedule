@@ -20,11 +20,11 @@
 		<h:outputLabel for="celular" value="Celular:"/>
 		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agendaController.celular}" />
 		<h:outputLabel for="dataInicio" value="Data/Hora(Início):"/>
-		<p:calendar id="dataInicio" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataInicio}" locale="pt" timeZone="America/Sao_Paulo" navigator="true" required="true" requiredMessage="Data/Hora(Início) é obrigatório">
+		<p:calendar id="dataInicio" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataInicio}" locale="pt" timeZone="America/Sao_Paulo" navigator="false" pages="3" required="true" requiredMessage="Data/Hora(Início) é obrigatório" timeControlType="select">
 			<p:ajax event="dateSelect" update="dataFim" />
 		</p:calendar>
 		<h:outputLabel for="dataFim" value="Data/Hora(Fim):"/>
-		<p:calendar id="dataFim" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataFim}" locale="pt" timeZone="America/Sao_Paulo" navigator="true" mindate="#{agendaController.dataInicio}" required="true" requiredMessage="Data/Hora(Fim) é obrigatório" />
+		<p:calendar id="dataFim" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" value="#{agendaController.dataFim}" locale="pt" timeZone="America/Sao_Paulo" navigator="false" pages="3" mindate="#{agendaController.dataInicio}" required="true" requiredMessage="Data/Hora(Fim) é obrigatório" timeControlType="select" />
 		<h:outputLabel for="tipo" value="Tipo:"/>
 		<p:selectOneMenu id="tipo" value="#{agendaController.tipo}" style="width:212px">
             <f:selectItem itemLabel="Selecione" itemValue="" />
@@ -63,6 +63,12 @@
 				PDF
 				<p:dataExporter type="pdf" target="grid" fileName="agendas" />
 			</h:commandLink>
+			|
+			<h:commandLink>
+				Imprimir
+				<p:printer target="grid" />
+			</h:commandLink>
+			
 		</f:facet>
 		<p:column headerText="Nome" width="34%" >
 			<h:outputText value="#{agendas.nome}" />
