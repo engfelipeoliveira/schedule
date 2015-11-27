@@ -131,9 +131,7 @@ public class SMSService {
         sql.append("  from Agenda a ");
         sql.append(" where a.usuario = :usuario ");
         sql.append("   and a.dataEvento = :dataEvento ");
-        sql.append("   and (a.situacao = 'A' ");
-        sql.append("    or (a.situacao = 'E' ");
-        sql.append("   and a.retornoSms is null)) ");
+        sql.append("   and a.situacao <> 'R' ");
                 
     	try {
             listaAgenda = (List<Agenda>)entityManager

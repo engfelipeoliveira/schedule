@@ -36,8 +36,11 @@ import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
 
 import br.com.system.schedule.model.Agenda;
+import br.com.system.schedule.model.Cronograma;
 import br.com.system.schedule.model.Usuario;
 import br.com.system.schedule.service.AgendaService;
+import br.com.system.schedule.service.CronogramaService;
+import br.com.system.schedule.service.SMSService;
 
 @Model
 public class AgendaController {
@@ -47,6 +50,12 @@ public class AgendaController {
 
     @Inject
     private AgendaService agendaService;
+    
+    @Inject
+    private CronogramaService cronogramaService;
+    
+    @Inject
+    private SMSService smsService;
     
     private Agenda agenda;
     
@@ -166,6 +175,20 @@ public class AgendaController {
         } catch (Exception e) {
             String errorMessage = getRootErrorMessage(e);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Erro");
+            facesContext.addMessage(null, m);
+        }
+    }
+
+    public void enviarSMSIndividual(Agenda agenda) throws Exception {
+        try {
+        	List<Cronograma> listaCronograma = cronogramaService.listarCronograma(usuarioLogado);
+        	Cronograma cronograma = listaCronograma.get(0);
+            smsService.enviarSMS(agenda, cronograma);
+        	facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SMS enviado com sucesso", "Sucesso"));
+            initAgenda();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao enviar SMS", "Erro");
             facesContext.addMessage(null, m);
         }
     }
