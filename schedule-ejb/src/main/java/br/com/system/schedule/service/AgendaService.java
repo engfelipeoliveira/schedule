@@ -30,6 +30,7 @@ import javax.persistence.PersistenceException;
 
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.Usuario;
+import br.com.system.schedule.util.Encriptor;
 
 @Stateless
 public class AgendaService {
@@ -110,6 +111,9 @@ public class AgendaService {
         	throw new Exception("Agenda e obrigatoria");
         }else{
         	try {
+        		Encriptor encriptor = new Encriptor();
+        		String idMsgZenvia = encriptor.criptografar(new Date().toString());
+        		agenda.setIdZMsgZenvia(idMsgZenvia);
         		entityManager.merge(agenda);
         		entityManager.flush();
 			} catch (PersistenceException e) {

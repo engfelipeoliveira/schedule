@@ -30,7 +30,7 @@ public class EmailService {
 	@Asynchronous
 	public void sendEmail(String to, String from, String subject, String content) {
 
-		logger.info("Sending Email from " + from + " to " + to + " : "+ subject);
+		logger.info("Enviando email de " + from + " para " + to + " : "+ subject);
 
 		try {
 
@@ -42,10 +42,10 @@ public class EmailService {
 
 			Transport.send(message);
 
-			logger.info("Email was sent");
+			logger.info("Email foi enviado");
 
 		} catch (MessagingException e) {
-			logger.severe("Error while sending email : " + e.getMessage());
+			logger.severe("Erro ao enviar email : " + e.getMessage());
 		}
 	}
 

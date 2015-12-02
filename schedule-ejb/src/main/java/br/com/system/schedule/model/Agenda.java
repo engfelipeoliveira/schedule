@@ -62,6 +62,9 @@ public class Agenda implements Serializable {
 	@Column(length=100)
 	private String retornoSms;
 	
+	@Column(length=50)
+	private String idZMsgZenvia;
+	
 	public Long getId() {
 		return id;
 	}
@@ -140,5 +143,13 @@ public class Agenda implements Serializable {
 
 	public void setImportaAgenda(ImportaAgenda importaAgenda) {
 		this.importaAgenda = importaAgenda;
+	}
+
+	public String getIdZMsgZenvia() {
+		return idZMsgZenvia;
+	}
+
+	public void setIdZMsgZenvia(String idZMsgZenvia) {
+		this.idZMsgZenvia = idZMsgZenvia;
 	}	
 }
