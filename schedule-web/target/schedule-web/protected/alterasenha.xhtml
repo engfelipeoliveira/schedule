@@ -7,6 +7,13 @@
    template="/WEB-INF/templates/semgrid.xhtml">
 
    <ui:define name="titulo">
+
+	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+   		<p:graphicImage value="../resources/gfx/loader.gif" />
+	</p:dialog>
+
    <img src="../resources/gfx/senha.png" width="" />
    	Alterar Senha
    </ui:define>

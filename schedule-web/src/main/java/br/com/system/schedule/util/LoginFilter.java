@@ -18,9 +18,8 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		System.err.println("ssss");
+		System.out.println("Saindo!");
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

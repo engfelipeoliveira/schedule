@@ -24,6 +24,13 @@
 
    <dependencies>
    
+   <dependency>
+    <groupId>net.bootsfaces</groupId>
+    <artifactId>bootsfaces</artifactId>
+    <version>0.6.6</version>
+    <scope>compile</scope>
+</dependency>
+   
 	<dependency>
 		<groupId>org.primefaces</groupId>
         <artifactId>primefaces</artifactId>

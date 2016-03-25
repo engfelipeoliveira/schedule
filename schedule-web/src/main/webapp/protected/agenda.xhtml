@@ -7,6 +7,7 @@
    template="/WEB-INF/templates/default.xhtml">
    
    <ui:define name="titulo">
+
    <img src="../resources/gfx/agenda.png" />
    	Agenda
    </ui:define>
@@ -15,11 +16,12 @@
 
    	<p:focus for="nome" id="focus" />
    	<h:inputHidden id="id" value="#{agenda.id}" />
+   	<h:inputHidden id="idZMsgZenvia" value="#{agenda.idZMsgZenvia}" />
    	<h:panelGrid columns="2" clumnClasses="titleCell" id="painel">
    	
    		<h:outputLabel for="nome" value="Nome*:"/>
-   		<p:autoComplete placeholder="Informe o nome completo" maxResults="20" minQueryLength="3" effect="blind" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" completeMethod="#{agendaController.autoCompleteNome}" >
-   			<p:ajax event="itemSelect" listener="#{agendaController.onItemSelect}" oncomplete="PrimeFaces.focus('formulario:dataEvento')" update="nome celular" />
+   		<p:autoComplete placeholder="Informe o nome completo" maxResults="20" minQueryLength="3" effect="blind" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" completeMethod="#{agendaController.autoCompleteNome}"  >
+   			<p:ajax event="itemSelect" listener="#{agendaController.onItemSelect}" oncomplete="PrimeFaces.focus('formulario:dataEvento')" update="nome celular"  />
    		</p:autoComplete>
 		<h:outputLabel for="celular" value="Celular*:"/>
 		<p:inputMask mask="(99)9.9999-9999" placeholder="Somente números (ddd + celular)" size="30" converter="telefoneConverter" id="celular" value="#{agenda.celular}" required="true" requiredMessage="Celular é obrigatório"/>

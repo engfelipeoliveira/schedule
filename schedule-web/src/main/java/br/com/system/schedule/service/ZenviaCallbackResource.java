@@ -40,8 +40,7 @@ public class ZenviaCallbackResource {
 		this.logger.log(Level.INFO, "args - msg " + msg);
 		
 		if(idMT != null && !"".equals(idMT)){
-			Long idAgenda = Long.parseLong(idMT);
-			agendaService.atualizarRetornoSms(idAgenda, msg);
+			agendaService.atualizarRetornoSms(idMT, msg);
 		}
 	}
 }

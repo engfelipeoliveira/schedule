@@ -39,6 +39,23 @@
 
     <dependencies>
 
+<dependency>
+  <groupId>org.glassfish.jersey.core</groupId>
+  <artifactId>jersey-client</artifactId>
+  <version>2.8</version>
+</dependency>
+<dependency>
+  <groupId>org.glassfish.jersey.media</groupId>
+  <artifactId>jersey-media-json-jackson</artifactId>
+  <version>2.8</version>
+</dependency>
+
+<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-client</artifactId>
+		<version>1.8</version>
+	</dependency>
+
         <!-- Declare the APIs we depend on and need for compilation. All of 
             them are provided by JBoss WildFly -->
 
@@ -105,17 +122,6 @@
 	<groupId>commons-httpclient</groupId>
 	<artifactId>commons-httpclient</artifactId>
 	<version>3.1</version>
-</dependency>
-
-<dependency>
-  <groupId>org.glassfish.jersey.core</groupId>
-  <artifactId>jersey-client</artifactId>
-  <version>2.8</version>
-</dependency>
-<dependency>
-  <groupId>org.glassfish.jersey.media</groupId>
-  <artifactId>jersey-media-json-jackson</artifactId>
-  <version>2.8</version>
 </dependency>
 
 <dependency>

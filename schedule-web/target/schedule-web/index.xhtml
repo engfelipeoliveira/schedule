@@ -13,6 +13,12 @@
        <h1><img src="resources/gfx/logo.png" /> <br />SOS Agenda</h1>
       <br />
       
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+    		<p:graphicImage value="resources/gfx/loader.gif" />
+		</p:dialog>
+      
       <h:form id="login_frm" style="width:30%">
       	
       	<p:focus for="email" id="focus" />

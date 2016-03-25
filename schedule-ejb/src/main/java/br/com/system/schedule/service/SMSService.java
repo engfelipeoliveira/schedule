@@ -19,6 +19,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.omg.CORBA.Environment;
+
 import sun.misc.BASE64Encoder;
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.Cronograma;
@@ -63,18 +65,44 @@ public class SMSService {
 		
 	}
 	
+	public static void main(String[] args) {
+		String userZenvia = "pegoliveira.api";
+		String passZenvia = "OVS5WOK94h";
+		String urlZenvia = "https://api-rest.zenvia360.com.br/services/send-sms";
+		String ddi = "55";
+		String celular = "24993223538";
+		String mensagem = "felipe!!!!";
+		
+		String id = "tstznv127%%__+";
+		String userPassword = userZenvia + ":" + passZenvia;
+		String encoding = new BASE64Encoder().encode(userPassword.getBytes());
+		System.out.println(encoding);
+		
+		Client client = ClientBuilder.newClient();
+		Entity<String> payload = Entity.json("{ \"sendSmsRequest\": {\"to\": \""+ddi+celular+"\", \"msg\": \""+mensagem+"\", \"callbackOption\": \"ALL\", \"id\": \""+id+"\" }}");
+		Response response = client.target(urlZenvia)
+		  .request(MediaType.APPLICATION_JSON_TYPE)
+		  .header("Authorization", "Basic " + encoding)
+		  .header("Accept", "application/json")
+		  .post(payload);
+		
+		System.out.println(payload.getEntity());
+		System.out.println(response);
+		
+	}
+	
+	
 	public void enviarSMS(Agenda agenda, Cronograma cronograma) throws Exception{
 		logger.log(Level.INFO, "Enviando SMS");
 		logger.log(Level.INFO, "Celular " + agenda.getCelular());
 		
 		String userZenvia = parametroService.getParametroByNome("userZenvia"); //pegoliveira.api";
-		String passZenvia = parametroService.getParametroByNome("passZenvia"); //"SX7qUGU32R";
+		String passZenvia = parametroService.getParametroByNome("passZenvia"); //"OVS5WOK94h";
 		String urlZenvia = parametroService.getParametroByNome("urlZenvia"); //"https://api-rest.zenvia360.com.br/services/send-sms";
 		String ddi = parametroService.getParametroByNome("ddi"); //"55";
 
 		try {
 			String celular = agenda.getCelular().toString();
-			String id = agenda.getIdZMsgZenvia();
 			String mensagem = cronograma.getTexto();
 			
 			String destinatario = agenda.getNome();
@@ -82,7 +110,7 @@ public class SMSService {
 			SimpleDateFormat fmtHora = new SimpleDateFormat("HH:mm");
 			String hora = fmtHora.format(agenda.getDataEvento());
 			
-			SimpleDateFormat fmtData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fmtData = new SimpleDateFormat("dd/MM");
 			String data = fmtData.format(agenda.getDataEvento());
 			
 			String remetente = agenda.getUsuario().getNome();
@@ -93,7 +121,15 @@ public class SMSService {
 			mensagem = mensagem.replaceAll("#HORA", hora);
 			
 			logger.log(Level.INFO, mensagem);
+
+			Encriptor encriptor = new Encriptor();
+    		String idMsgZenvia = encriptor.criptografar(new Date().toString());
+    		agenda.setIdZMsgZenvia(idMsgZenvia);
+			agenda.setSituacao("E");
+    		entityManager.merge(agenda);
+			entityManager.flush();
 			
+			String id = agenda.getIdZMsgZenvia();
 			String userPassword = userZenvia + ":" + passZenvia;
 			String encoding = new BASE64Encoder().encode(userPassword.getBytes());
 			
@@ -110,17 +146,11 @@ public class SMSService {
 				throw new Exception("Erro ao enviar SMS");
 			}
 			
-			Encriptor encriptor = new Encriptor();
-    		String idMsgZenvia = encriptor.criptografar(new Date().toString());
-    		agenda.setIdZMsgZenvia(idMsgZenvia);
-			agenda.setSituacao("E");
-			entityManager.merge(agenda);
-			entityManager.flush();
-			
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, NOME_CLASS +".enviarSMS() - Erro ao enviar SMS");
 			agenda.setSituacao("F");
 			entityManager.merge(agenda);
+			entityManager.flush();
 			throw new Exception("Erro ao enviar SMS");
 		}
 	}

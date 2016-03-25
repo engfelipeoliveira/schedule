@@ -30,7 +30,6 @@ import javax.persistence.PersistenceException;
 
 import br.com.system.schedule.model.Agenda;
 import br.com.system.schedule.model.Usuario;
-import br.com.system.schedule.util.Encriptor;
 
 @Stateless
 public class AgendaService {
@@ -49,14 +48,14 @@ public class AgendaService {
 
     private final String NOME_CLASS = "AgendaService";
     
-    public void atualizarRetornoSms(Long id, String retornoSms) throws Exception {
+    public void atualizarRetornoSms(String id, String retornoSms) throws Exception {
     	logger.info("Consultando Agenda por id:" + id);
         
         if(id == null){
         	logger.log(Level.INFO, NOME_CLASS +".atualizarRetornoSms() - Id Agenda e obrigatoria");
         	throw new Exception("Id Agenda e obrigatoria");
         }else{
-        	String sql = " from Agenda a where a.id = :id";
+        	String sql = " from Agenda a where a.idZMsgZenvia = :id";
             Agenda agenda = null;
         	try {
                 agenda = (Agenda)entityManager
@@ -111,9 +110,6 @@ public class AgendaService {
         	throw new Exception("Agenda e obrigatoria");
         }else{
         	try {
-        		Encriptor encriptor = new Encriptor();
-        		String idMsgZenvia = encriptor.criptografar(new Date().toString());
-        		agenda.setIdZMsgZenvia(idMsgZenvia);
         		entityManager.merge(agenda);
         		entityManager.flush();
 			} catch (PersistenceException e) {

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui" >
+    <h:head>
+        <title>SOS Agenda</title>
+        <meta name="author" content="The Author"></meta>
+        <h:outputStylesheet name="/resources/css/screen.css" />
+    </h:head>
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brandImg="resources/gfx/titulo.png" brandHref="#" inverse="true" fixed="top" >
+            <b:navbarLinks>
+                <b:dropMenu value="Cadastro">
+                    <b:navLink icon="globe" value="Agenda" href="#"></b:navLink>
+                    <b:navLink value="Cronograma" href="#"></b:navLink>
+                </b:dropMenu>
+                <b:dropMenu value="Integração">
+                    <b:navLink value="Arquivo" href="#"></b:navLink>
+                    <b:navLink value="WebService" href="#"></b:navLink>
+                </b:dropMenu>
+                <b:dropMenu value="Minha Conta">
+                    <b:navLink value="Alterar Senha" href="#"></b:navLink>
+                    <b:navLink value="Relatório" href="#"></b:navLink>
+                </b:dropMenu>
+                <b:navLink value="Sair" href="#"></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <b:commandButton value="Olá Felipe!" look="success" iconAlign="right"/>
+            </h:form>
+        </b:navBar>
+        <b:jumbotron>
+            <b:container > 
+                <h2><img src="resources/gfx/agenda.png" /> Agenda</h2>
+            </b:container>
+        </b:jumbotron>
+        <b:container>
+        <b:panel  >
+        s
+        </b:panel>
+
+        </b:container> 
+        <b:container>
+            <b:row>
+                <b:column col-md="4">
+                    <h2>Heading</h2>
+                    <p>
+<h:form>
+            <p:calendar id="dataEvento" pages="3" placeholder="Selecione a data/hora no calendário" size="30" readonlyInput="true" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data é obrigatória" locale="pt" timeZone="America/Sao_Paulo" navigator="false"  timeControlType="select" />
+            <p:commandButton title="Excluir" icon="ui-icon-trash"  />
+            <b:button outcome="testButton" value="With Icon" icon="envelope">  
+        <f:param name="testId" value="22" />  
+    </b:button>  
+<b:inputText>
+            <f:facet name="prepend">
+                <h:outputText value="@" />
+            </f:facet>
+        </b:inputText>
+</h:form>
+					</p>
+                    <p><b:button outcome="" value="View details »"/></p>
+                </b:column>
+                <b:column col-md="4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, 
+                       ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><b:button outcome="" value="View details »"/></p>
+                </b:column>
+                <b:column col-md="4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, 
+                       ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><b:button outcome="" value="View details »"/></p>
+                </b:column>
+            </b:row>
+            <hr/>
+            <footer>
+            <p>© SOS Agenda 2015</p>
+            </footer>
+        </b:container>
+
+    </h:body>
+</html>
