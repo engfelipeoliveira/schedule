@@ -1,5 +1,6 @@
 package br.com.system.schedule.service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +20,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.omg.CORBA.Environment;
+
+import com.google.gson.Gson;
 
 import sun.misc.BASE64Encoder;
 import br.com.system.schedule.model.Agenda;
@@ -65,31 +69,71 @@ public class SMSService {
 		
 	}
 	
+	
 	public static void main(String[] args) {
+		String userZenvia = "pegoliveira.api";
+		String passZenvia = "OVS5WOK94h";
+		String urlZenvia = "https://api-rest.zenvia360.com.br/services/get-sms-status/F38C0E31686CED4EF0CBC3FE5672DF22";
+		String userPassword = userZenvia + ":" + passZenvia;
+		String encoding = new BASE64Encoder().encode(userPassword.getBytes());
+		
+		Client client = ClientBuilder.newClient();
+		Response response = client.target(urlZenvia)
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				  .header("Authorization", "Basic " + encoding)
+				  .header("Accept", "application/json")
+		  .get();
+		System.out.println("status: " + response.getStatus());
+		System.out.println("headers: " + response.getHeaders());
+		System.out.println("body:" + response.readEntity(String.class));
+		
+		
+	}		
+	
+	
+	/*public static void main(String[] args) {
 		String userZenvia = "pegoliveira.api";
 		String passZenvia = "OVS5WOK94h";
 		String urlZenvia = "https://api-rest.zenvia360.com.br/services/send-sms";
 		String ddi = "55";
 		String celular = "24993223538";
-		String mensagem = "felipe!!!!";
+		String mensagem = "agendado 20:45";
 		
-		String id = "tstznv127%%__+";
+		String id = "za11";
 		String userPassword = userZenvia + ":" + passZenvia;
 		String encoding = new BASE64Encoder().encode(userPassword.getBytes());
 		System.out.println(encoding);
 		
+		SMSJsonRequest j = new SMSJsonRequest();
+		SendSmsRequest s = new SendSmsRequest();
+		s.setCallbackOption("ALL");
+		s.setId("zaaa1");
+		s.setMsg("Mensagem cel desligado");
+		s.setTo("5524993223538");
+		j.setSendSmsRequest(s);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(j); 
+		System.out.println(json);
+		
 		Client client = ClientBuilder.newClient();
-		Entity<String> payload = Entity.json("{ \"sendSmsRequest\": {\"to\": \""+ddi+celular+"\", \"msg\": \""+mensagem+"\", \"callbackOption\": \"ALL\", \"id\": \""+id+"\" }}");
+		Entity<String> payload = Entity.json(json);
+		
 		Response response = client.target(urlZenvia)
 		  .request(MediaType.APPLICATION_JSON_TYPE)
 		  .header("Authorization", "Basic " + encoding)
 		  .header("Accept", "application/json")
 		  .post(payload);
 		
-		System.out.println(payload.getEntity());
-		System.out.println(response);
+		System.out.println("status: " + response.getStatus());
+		System.out.println("headers: " + response.getHeaders());
+		//System.out.println("body:" + response.readEntity(String.class));
+		String retorno = response.readEntity(String.class);
+		System.out.println(retorno);
+		SMSJsonResponse resp = gson.fromJson(retorno, SMSJsonResponse.class);
+		System.out.println("desc " + resp.getSendSmsResponse().getStatusDescription());
 		
-	}
+	}*/
 	
 	
 	public void enviarSMS(Agenda agenda, Cronograma cronograma) throws Exception{
@@ -100,6 +144,8 @@ public class SMSService {
 		String passZenvia = parametroService.getParametroByNome("passZenvia"); //"OVS5WOK94h";
 		String urlZenvia = parametroService.getParametroByNome("urlZenvia"); //"https://api-rest.zenvia360.com.br/services/send-sms";
 		String ddi = parametroService.getParametroByNome("ddi"); //"55";
+		
+		String detalheSituacao = null;
 
 		try {
 			String celular = agenda.getCelular().toString();
@@ -126,6 +172,7 @@ public class SMSService {
     		String idMsgZenvia = encriptor.criptografar(new Date().toString());
     		agenda.setIdZMsgZenvia(idMsgZenvia);
 			agenda.setSituacao("E");
+			agenda.setDetalheSituacao("Message Sent");
     		entityManager.merge(agenda);
 			entityManager.flush();
 			
@@ -133,15 +180,34 @@ public class SMSService {
 			String userPassword = userZenvia + ":" + passZenvia;
 			String encoding = new BASE64Encoder().encode(userPassword.getBytes());
 			
+			SMSJsonRequest sMSJsonRequest = new SMSJsonRequest();
+			SendSmsRequest sendSmsRequest = new SendSmsRequest();
+			sendSmsRequest.setCallbackOption("ALL");
+			sendSmsRequest.setId(id);
+			sendSmsRequest.setMsg(mensagem);
+			sendSmsRequest.setTo(ddi + celular);
+			sMSJsonRequest.setSendSmsRequest(sendSmsRequest);
+			
+			Gson gson = new Gson();
+			String jsonReq = gson.toJson(sMSJsonRequest); 
+			
 			Client client = ClientBuilder.newClient();
-			Entity<String> payload = Entity.json("{ \"sendSmsRequest\": {\"to\": \""+ddi+celular+"\", \"msg\": \""+mensagem+"\", \"callbackOption\": \"ALL\", \"id\": \""+id+"\" }}");
+			Entity<String> payload = Entity.json(jsonReq);
 			Response response = client.target(urlZenvia)
 			  .request(MediaType.APPLICATION_JSON_TYPE)
 			  .header("Authorization", "Basic " + encoding)
 			  .header("Accept", "application/json")
 			  .post(payload);
 			
-			logger.log(Level.INFO, "status: " + response.getStatus());
+			String jsonRes = response.readEntity(String.class);
+			SMSJsonResponse smsJsonResponse = gson.fromJson(jsonRes, SMSJsonResponse.class);
+			String statusCode = smsJsonResponse.getSendSmsResponse().getStatusCode();
+			detalheSituacao = smsJsonResponse.getSendSmsResponse().getDetailDescription();
+			
+			if(!"00".equalsIgnoreCase(statusCode)){
+				throw new Exception("Erro ao enviar SMS");
+			}
+			
 			if(response.getStatus() != 200){
 				throw new Exception("Erro ao enviar SMS");
 			}
@@ -149,6 +215,7 @@ public class SMSService {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, NOME_CLASS +".enviarSMS() - Erro ao enviar SMS");
 			agenda.setSituacao("F");
+			agenda.setDetalheSituacao(detalheSituacao);
 			entityManager.merge(agenda);
 			entityManager.flush();
 			throw new Exception("Erro ao enviar SMS");

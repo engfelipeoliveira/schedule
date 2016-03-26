@@ -60,6 +60,9 @@ public class Agenda implements Serializable {
 	private String situacao;
 	
 	@Column(length=100)
+	private String detalheSituacao;
+	
+	@Column(length=100)
 	private String retornoSms;
 	
 	@Column(length=50)
@@ -151,5 +154,14 @@ public class Agenda implements Serializable {
 
 	public void setIdZMsgZenvia(String idZMsgZenvia) {
 		this.idZMsgZenvia = idZMsgZenvia;
+	}
+
+	public String getDetalheSituacao() {
+		return detalheSituacao;
+	}
+
+	public void setDetalheSituacao(String detalheSituacao) {
+		this.detalheSituacao = detalheSituacao;
 	}	
+	
 }

@@ -75,7 +75,7 @@
 		<p:column headerText="Situação" width="9%" >
 	 		<h:outputText value="Agendado" rendered="#{agendas.situacao eq 'A'}" />
 			<h:outputText value="Enviado" rendered="#{agendas.situacao eq 'E'}" />
-			<h:outputText value="Falha" rendered="#{agendas.situacao eq 'F'}" />
+			<h:outputText value="Falha" title="#{agendas.detalheSituacao}" rendered="#{agendas.situacao eq 'F'}" />
 			<h:outputText value="Respondido" rendered="#{agendas.situacao eq 'R'}" />
 		</p:column>
 		<p:column  width="13%" exportable="false" >
