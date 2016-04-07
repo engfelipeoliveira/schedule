@@ -20,7 +20,7 @@
    	<h:panelGrid columns="2" clumnClasses="titleCell" id="painel">
    	
    		<h:outputLabel for="nome" value="Nome*:"/>
-   		<p:autoComplete placeholder="Informe o nome completo" maxResults="20" minQueryLength="3" effect="blind" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" completeMethod="#{agendaController.autoCompleteNome}"  >
+   		<p:autoComplete placeholder="Informe o primeiro nome" maxResults="20" minQueryLength="3" effect="blind" size="30" id="nome" value="#{agenda.nome}" maxlength="100" required="true" requiredMessage="Nome é obrigatório" completeMethod="#{agendaController.autoCompleteNome}"  >
    			<p:ajax event="itemSelect" listener="#{agendaController.onItemSelect}" oncomplete="PrimeFaces.focus('formulario:dataEvento')" update="nome celular"  />
    		</p:autoComplete>
 		<h:outputLabel for="celular" value="Celular*:"/>

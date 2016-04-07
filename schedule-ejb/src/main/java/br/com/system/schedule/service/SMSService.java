@@ -69,7 +69,7 @@ public class SMSService {
 		
 	}
 	
-	
+	/*	
 	public static void main(String[] args) {
 		String userZenvia = "pegoliveira.api";
 		String passZenvia = "OVS5WOK94h";
@@ -90,8 +90,7 @@ public class SMSService {
 		
 	}		
 	
-	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		String userZenvia = "pegoliveira.api";
 		String passZenvia = "OVS5WOK94h";
 		String urlZenvia = "https://api-rest.zenvia360.com.br/services/send-sms";

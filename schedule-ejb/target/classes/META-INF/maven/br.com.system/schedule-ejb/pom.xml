@@ -38,6 +38,13 @@
     </licenses>
 
     <dependencies>
+    
+    <dependency>
+	<groupId>org.mongodb.morphia</groupId>
+	<artifactId>morphia</artifactId>
+	<version>1.1.1</version>
+</dependency>
+    
 
 <dependency>
   <groupId>org.glassfish.jersey.core</groupId>
@@ -48,6 +55,18 @@
 	<groupId>com.google.code.gson</groupId>
 	<artifactId>gson</artifactId>
 	<version>2.3.1</version>
+</dependency>
+
+        <dependency>
+	<groupId>commons-httpclient</groupId>
+	<artifactId>commons-httpclient</artifactId>
+	<version>3.1</version>
+</dependency>
+
+<dependency>
+	<groupId>javax.mail</groupId>
+	<artifactId>mail</artifactId>
+	<version>1.4.7</version>
 </dependency>
 
         <!-- Declare the APIs we depend on and need for compilation. All of 
@@ -112,17 +131,7 @@
 			<version>1.8.5</version>
 		</dependency>
         
-        <dependency>
-	<groupId>commons-httpclient</groupId>
-	<artifactId>commons-httpclient</artifactId>
-	<version>3.1</version>
-</dependency>
 
-<dependency>
-	<groupId>javax.mail</groupId>
-	<artifactId>mail</artifactId>
-	<version>1.4.7</version>
-</dependency>
     </dependencies>
 
     <build>
